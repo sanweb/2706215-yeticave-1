@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Александр Глущенко](https://up.htmlacademy.ru/php-individual/1/user/2706215).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Анатольев](https://htmlacademy.ru/profile/anatolev-max).
 
 ---
 
