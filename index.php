@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 $is_auth = rand(0, 1);
 
 $user_name = 'Александр'; // укажите здесь ваше имя
