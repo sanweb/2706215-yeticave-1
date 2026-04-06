@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/functions.php';
+
 $is_auth = rand(0, 1);
 
 $user_name = 'Александр';
@@ -119,8 +121,8 @@ $lots = [
                     <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $lot['title'] ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
-                            <span class="lot__amount"><?= $lot['price'] ?></span>
-                            <span class="lot__cost">цена<b class="rub">р</b></span>
+                            <span class="lot__amount"><?= format_price($lot['price']) ?></span>
+                            <span class="lot__cost">цена</span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
