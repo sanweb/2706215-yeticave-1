@@ -18,3 +18,15 @@ function format_price(int $price): string
 
     return $formattedPrice . ' <b class="rub">р</b>';
 }
+
+/**
+ * Escapes a string for safe HTML output.
+ *
+ * @param string $value Raw string value.
+ *
+ * @return string Escaped string.
+ */
+function esc(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}

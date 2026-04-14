@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
-require_once (__DIR__ . '/helpers.php');
-require_once (__DIR__ . '/functions.php');
+require_once(__DIR__ . '/helpers.php');
+require_once(__DIR__ . '/functions.php');
 
-$is_auth = rand(0, 1);
+$isAuth = (bool) rand(0, 1);
 
-$user_name = 'Александр';
+$userName = 'Александр';
 
-$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$categories = [
+    'Доски и лыжи',
+    'Крепления',
+    'Ботинки',
+    'Одежда',
+    'Инструменты',
+    'Разное'
+];
+
 $lots = [
     [
         'title' => '2014 Rossignol District Snowboard',
@@ -49,17 +57,17 @@ $lots = [
     ],
 ];
 
-$content = include_template('main.php', [
+$mainContent = include_template('main.php', [
     'lots' => $lots,
     'categories' => $categories,
 ]);
 
-$html = include_template('layout.php', [
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
+$pageContent = include_template('layout.php', [
+    'is_auth' => $isAuth,
+    'user_name' => $userName,
     'categories' => $categories,
-    'content' => $content,
+    'content' => $mainContent,
     'title' => 'Главная',
 ]);
 
-echo $html;
+echo $pageContent;
