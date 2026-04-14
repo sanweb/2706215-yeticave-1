@@ -69,8 +69,8 @@ $mainContent = include_template('main.php', [
 ]);
 
 $pageContent = include_template('layout.php', [
-    'is_auth' => $isAuth,
-    'user_name' => $userName,
+    'isAuth' => $isAuth,
+    'userName' => $userName,
     'categories' => $categories,
     'content' => $mainContent,
     'title' => 'Главная',
