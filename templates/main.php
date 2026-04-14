@@ -34,7 +34,11 @@
                             <span class="lot__amount"><?= format_price($lot['price'] ?? 0) ?></span>
                             <span class="lot__cost">цена</span>
                         </div>
-                        <div class="lot__timer timer">12:23</div>
+
+                        <?php $timeLeft = get_dt_range($lot['expire_date'] ?? ''); ?>
+                        <div class="lot__timer timer <?= $timeLeft[0] > 0 ? '' : 'timer--finishing'; ?>">
+                            <?= str_pad((string) $timeLeft[0], 2, '0', STR_PAD_LEFT); ?>:<?= str_pad((string) $timeLeft[1], 2, '0', STR_PAD_LEFT); ?>
+                        </div>
                     </div>
                 </div>
             </li>

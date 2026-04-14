@@ -30,3 +30,30 @@ function esc(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
+
+/**
+ * Returns the time remaining until the specified date.
+ *
+ * @param string $date Expiration date in Y-m-d format.
+ *
+ * @return array Remaining hours and minutes.
+ */
+function get_dt_range(string $date): array
+{
+    $timestamp = strtotime($date);
+
+    if ($timestamp === false) {
+        return [0, 0];
+    }
+
+    $secondsLeft = $timestamp - time();
+
+    if ($secondsLeft > 0) {
+        $hours = (int) ($secondsLeft / 3600);
+        $minutes = (int) (($secondsLeft % 3600) / 60);
+
+        return [$hours, $minutes];
+    }
+
+    return [0, 0];
+}
