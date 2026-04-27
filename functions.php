@@ -57,3 +57,18 @@ function get_dt_range(string $date): array
 
     return [0, 0];
 }
+
+/**
+ * Formats remaining time as HH:MM.
+ *
+ * @param array{0: int, 1: int} $time_left Remaining hours and minutes.
+ *
+ * @return string Formatted remaining time.
+ */
+function format_time_left(array $time_left): string
+{
+    $hours = str_pad((string) $time_left[0], 2, '0', STR_PAD_LEFT);
+    $minutes = str_pad((string) $time_left[1], 2, '0', STR_PAD_LEFT);
+
+    return $hours . ':' . $minutes;
+}
