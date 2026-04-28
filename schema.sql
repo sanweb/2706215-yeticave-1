@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(255) NOT NULL,
   `name` VARCHAR(128) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
-  `contacts` TEXT NULL DEFAULT NULL,
+  `contact_info` TEXT NULL DEFAULT NULL,
 
   -- created_at is filled by MySQL when the record is created
   -- updated_at is updated by the application when the record changes
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Lot categories
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(128) NOT NULL,
-  `slug` VARCHAR(128) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
+  `slug` VARCHAR(64) NOT NULL,
 
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_categories_name` (`name`),
