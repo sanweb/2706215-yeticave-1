@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `category_id` INT UNSIGNED NOT NULL,
 
   -- The winning bet is stored here after the lot expires.
-  -- Foreign key is intentionally not added at this stage.
+  -- The foreign key is added after the bets table is created.
+  -- The application checks that the winning bet belongs to this lot.
   `winner_bet_id` INT UNSIGNED NULL DEFAULT NULL,
 
   `title` VARCHAR(255) NOT NULL,
@@ -111,3 +112,11 @@ CREATE TABLE IF NOT EXISTS `bets` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_0900_ai_ci;
+
+-- The foreign key only checks that the winning bet exists.
+-- The application checks that the winning bet belongs to the selected lot.
+ALTER TABLE `lots`
+  ADD CONSTRAINT `fk_lots_winner_bet`
+  FOREIGN KEY (`winner_bet_id`) REFERENCES `bets` (`id`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;
