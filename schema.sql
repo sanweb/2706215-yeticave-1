@@ -45,7 +45,10 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `author_id` INT UNSIGNED NOT NULL,
   `category_id` INT UNSIGNED NOT NULL,
-  `winner_id` INT UNSIGNED NULL DEFAULT NULL,
+
+  -- The winning bet is stored here after the lot expires.
+  -- Foreign key is intentionally not added at this stage.
+  `winner_bet_id` INT UNSIGNED NULL DEFAULT NULL,
 
   `title` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
@@ -53,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
 
   -- Prices are stored as integer values
   `start_price` INT UNSIGNED NOT NULL,
-  `bid_step` INT UNSIGNED NOT NULL,
+  `bet_step` INT UNSIGNED NOT NULL,
 
   -- According to the spec, the expiration date is stored without time
   `expire_date` DATE NOT NULL,
@@ -66,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
   -- Indexes for filtering lots
   KEY `idx_lots_author_id` (`author_id`),
   KEY `idx_lots_category_id` (`category_id`),
-  KEY `idx_lots_winner_id` (`winner_id`),
+  KEY `idx_lots_winner_bet_id` (`winner_bet_id`),
   KEY `idx_lots_expire_date` (`expire_date`),
   KEY `idx_lots_created_at` (`created_at`),
 
@@ -77,35 +80,33 @@ CREATE TABLE IF NOT EXISTS `lots` (
     FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
 
   CONSTRAINT `fk_lots_category`
-    FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
-
-  CONSTRAINT `fk_lots_winner`
-    FOREIGN KEY (`winner_id`) REFERENCES `users` (`id`)
+    FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_0900_ai_ci;
 
--- User bids for lots
-CREATE TABLE IF NOT EXISTS `bids` (
+-- User bets for lots
+CREATE TABLE IF NOT EXISTS `bets` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `lot_id` INT UNSIGNED NOT NULL,
 
-  -- Bid amount is stored as an integer value
+  -- Bet amount is stored as an integer value
   `amount` INT UNSIGNED NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`id`),
 
-  -- Index for "My bids" page
-  KEY `idx_bids_user_created_at` (`user_id`, `created_at`),
-  -- Index for showing recent bids for a selected lot
-  KEY `idx_bids_lot_created_at` (`lot_id`, `created_at`),
+  -- Index for "My bets" page
+  KEY `idx_bets_user_created_at` (`user_id`, `created_at`),
 
-  CONSTRAINT `fk_bids_user`
+  -- Index for showing recent bets for a selected lot
+  KEY `idx_bets_lot_created_at` (`lot_id`, `created_at`),
+
+  CONSTRAINT `fk_bets_user`
     FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
 
-  CONSTRAINT `fk_bids_lot`
+  CONSTRAINT `fk_bets_lot`
     FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
