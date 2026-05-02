@@ -23,9 +23,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_users_email` (`email`)
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- Lot categories
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -36,9 +34,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_categories_name` (`name`),
   UNIQUE KEY `uq_categories_slug` (`slug`)
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- Lots
 CREATE TABLE IF NOT EXISTS `lots` (
@@ -82,9 +78,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
 
   CONSTRAINT `fk_lots_category`
     FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- User bets for lots
 CREATE TABLE IF NOT EXISTS `bets` (
@@ -109,9 +103,7 @@ CREATE TABLE IF NOT EXISTS `bets` (
 
   CONSTRAINT `fk_bets_lot`
     FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`)
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- The foreign key only checks that the winning bet exists.
 -- The application checks that the winning bet belongs to the selected lot.
