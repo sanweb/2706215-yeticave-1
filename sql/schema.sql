@@ -14,12 +14,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(255) NOT NULL,
   `name` VARCHAR(128) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
-  `contact_info` TEXT NULL DEFAULT NULL,
+  `contact_info` TEXT NULL,
 
   -- created_at is filled by MySQL when the record is created
   -- updated_at is updated by the application when the record changes
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL,
 
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_users_email` (`email`)
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
   -- The winning bet is stored here after the lot expires.
   -- The foreign key is added after the bets table is created.
   -- The application checks that the winning bet belongs to this lot.
-  `winner_bet_id` INT UNSIGNED NULL DEFAULT NULL,
+  `winner_bet_id` INT UNSIGNED NULL,
 
   `title` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `lots` (
   `expire_date` DATE NOT NULL,
 
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL,
 
   PRIMARY KEY (`id`),
 
