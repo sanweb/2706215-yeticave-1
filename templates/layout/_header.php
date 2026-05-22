@@ -1,7 +1,7 @@
 <?php
 
-/** @var bool $is_auth */
-/** @var array $user */
+/** @var bool   $is_auth */
+/** @var array  $user */
 
 ?>
 <header class="main-header">

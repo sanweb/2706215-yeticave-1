@@ -10,10 +10,7 @@
 
     <?= include_template('_partials/category-nav-list.php', [
         'categories' => $categories,
-        'list_class' => 'promo__list',
-        'item_class' => 'promo__item',
-        'link_class' => 'promo__link',
-        'use_slug_modifier' => true,
+        'is_promo' => true,
     ]) ?>
 
 </section>

@@ -1,13 +1,16 @@
 <?php
 
 /** @var string $page_title */
-/** @var bool $is_auth */
-/** @var array $user */
-/** @var string $main_class */
+/** @var bool   $is_auth */
+/** @var array  $user */
+/** @var string $main_classname */
 /** @var string $main_content */
-/** @var array $categories */
-/** @var array $css_files */
-/** @var array $js_files */
+/** @var array  $categories */
+/** @var array  $css_files */
+/** @var array  $js_files */
+
+$css_files = $css_files ?? [];
+$js_files = $js_files ?? [];
 
 ?>
 <!DOCTYPE html>
@@ -20,9 +23,7 @@
     <link href="/assets/css/normalize.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <!-- page styles -->
-    <?php if (!empty($css_files)): ?>
-        <?= include_asset_files($css_files, ASSET_TYPE_CSS) ?>
-    <?php endif; ?>
+    <?= include_asset_files(ASSET_TYPE_CSS, $css_files) ?>
 </head>
 
 <body>
@@ -33,7 +34,7 @@
             'user' => $user,
         ]) ?>
 
-        <main class="<?= $main_class ?>">
+        <main class="<?= $main_classname ?>">
             <?= $main_content ?>
         </main>
     </div>
@@ -43,9 +44,7 @@
     ]) ?>
 
     <!-- page js -->
-    <?php if (!empty($js_files)): ?>
-        <?= include_asset_files($js_files, ASSET_TYPE_JS) ?>
-    <?php endif; ?>
+    <?= include_asset_files(ASSET_TYPE_JS, $js_files) ?>
 </body>
 
 </html>

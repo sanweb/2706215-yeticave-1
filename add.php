@@ -12,56 +12,19 @@ require_once __DIR__ . '/init.php';
 $form_data = [];
 $form_errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_data = $_POST;
 
-    // Required fields (except image file)
-    $required_fields = [
-        'category_id',
-        'title',
-        'description',
-        'start_price',
-        'bet_step',
-        'expire_date',
-    ];
+    $form_errors = validate_form_data(
+        FORM_FIELDS[ADD_LOT_FORM_KEY],
+        $form_data,
+        $form_errors
+    );
 
-    // Validate required text fields
-    $form_errors = validate_form_data($required_fields, $form_data, $form_errors);
-
-    // Image file field
-    $file_input_name = 'lot_image_file';
-    $file_field = 'image_url';
-
-    // Upload image file if exists
-    if (!empty($_FILES[$file_input_name])) {
-        $saved_file_name = save_uploaded_file($file_input_name);
-
-        if ($saved_file_name) {
-            $form_data[$file_field] = $saved_file_name;
-            unset($form_errors[$file_input_name]);
-        } else {
-            $form_data[$file_field] = '';
-            $form_errors[$file_input_name] = 'Ошибка при загрузке файла';
-        }
-
-    } else {
-        $form_errors[$file_input_name] = 'Загрузите файл';
-    }
+    process_image_file($form_data, $form_errors);
 
     if (empty($form_errors)) {
-        // TODO: Replace temporary author ID with current authenticated user ID.
-        $author_id = $user['id'] ?? 0;
-
-        $data = [
-            (int) $author_id,
-            (int) $form_data['category_id'],
-            $form_data['title'],
-            $form_data['description'],
-            $form_data['image_url'],
-            (int) $form_data['start_price'],
-            (int) $form_data['bet_step'],
-            $form_data['expire_date'],
-        ];
+        $data = build_add_lot_form_data($form_data, $user);
 
         $added_lot_id = add_lot($db_connection, $data);
 
@@ -85,7 +48,7 @@ $page_content = include_template('layout/main.php', [
     'user' => $user,
     'categories' => $categories,
     'main_content' => $main_content,
-    'main_class' => '',
+    'main_classname' => '',
     'css_files' => ['/assets/css/flatpickr.min.css'],
     'js_files' => ['/assets/js/flatpickr.js', '/assets/js/script.js'],
 ]);

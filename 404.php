@@ -9,21 +9,14 @@ require_once __DIR__ . '/init.php';
 /** @var array $user */
 /** @var array $categories */
 
-$lot_id = (int) ($_GET['id'] ?? 0);
-$lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
+$lots = get_recent_lots($db_connection);
 
-if ($lot === null) {
-    http_response_code(HttpCodeEnum::NOT_FOUND->value);
-    exit('Страница не найдена');
-}
-
-$main_content = include_template('lot.php', [
+$main_content = include_template('404.php', [
     'categories' => $categories,
-    'lot' => $lot,
 ]);
 
 $page_content = include_template('layout/main.php', [
-    'page_title' => $lot['title'] ?? '',
+    'page_title' => '404 Страница не найдена',
     'is_auth' => $is_auth,
     'user' => $user,
     'categories' => $categories,
