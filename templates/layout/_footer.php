@@ -8,8 +8,7 @@
 
         <?= include_template('_partials/category-nav-list.php', [
             'categories' => $categories,
-            'list_class' => 'nav__list container',
-            'item_class' => 'nav__item',
+            'is_promo' => false,
         ]) ?>
 
     </nav>
