@@ -12,6 +12,7 @@ require_once BASE_PATH . '/enum/HttpMethodEnum.php';
 require_once BASE_PATH . '/enum/HttpCodeEnum.php';
 require_once BASE_PATH . '/functions/helpers.php';
 require_once BASE_PATH . '/functions/functions.php';
+require_once BASE_PATH . '/functions/database-core.php';
 require_once BASE_PATH . '/functions/database.php';
 require_once BASE_PATH . '/functions/upload.php';
 require_once BASE_PATH . '/functions/form.php';
