@@ -3,30 +3,6 @@
 declare(strict_types=1);
 
 /**
- * Validates required form fields and returns validation errors.
- *
- * @param string[] $required_fields Required field names.
- * @param array<string, mixed> $form_data Submitted form data.
- * @param array<string, string> $form_errors Existing validation errors indexed by field name.
- *
- * @return array<string, string> Updated validation errors indexed by field name.
- */
-function validate_form_data(array $required_fields = [], array $form_data = [], array $form_errors = []): array
-{
-    foreach ($required_fields as $field) {
-        if (empty($form_data[$field])) {
-            $form_errors[$field] = 'Заполните это поле';
-        } elseif ($field === 'expire_date' && !is_date_valid($form_data[$field])) {
-            $form_errors[$field] = 'Некорректная дата';
-        } else {
-            unset($form_errors[$field]);
-        }
-    }
-
-    return $form_errors;
-}
-
-/**
  * Processes uploaded lot image file and updates form data or validation errors.
  *
  * @param array<string, mixed> $form_data Submitted form data.
