@@ -22,7 +22,7 @@ $page_content = include_template('layout/main.php', [
     'user' => $user,
     'categories' => $categories,
     'main_content' => $main_content,
-    'main_class' => 'container',
+    'main_classname' => 'container',
 ]);
 
 echo $page_content;

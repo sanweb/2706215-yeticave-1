@@ -6,9 +6,6 @@ declare(strict_types=1);
 const SECONDS_PER_MINUTE = 60;
 const SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60;
 
-// HTTP response status codes
-const HTTP_NOT_FOUND = 404;
-
 // Database connection
 const DEFAULT_MYSQL_PORT = 3306;
 

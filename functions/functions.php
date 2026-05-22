@@ -72,12 +72,12 @@ function esc(string $value): string
 /**
  * Generates HTML tags for asset files.
  *
- * @param string[] $files List of asset file paths.
  * @param string $type Asset type.
+ * @param string[] $files List of asset file paths.
  *
  * @return string HTML tags separated by line breaks.
  */
-function include_asset_files(array $files = [], string $type = ASSET_TYPE_CSS): string
+function include_asset_files(string $type, array $files = []): string
 {
     $tags = [];
 
@@ -96,6 +96,8 @@ function include_asset_files(array $files = [], string $type = ASSET_TYPE_CSS): 
 
 /**
  * Checks whether the current page is the home page.
+ *
+ * @return bool
  */
 function is_home_page(): bool
 {
@@ -108,6 +110,7 @@ function is_home_page(): bool
  * Redirects to the given URL and stops script execution.
  *
  * @param string $url Redirect URL.
+ *
  * @return never
  */
 function redirect(string $url): never

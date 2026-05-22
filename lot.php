@@ -13,7 +13,7 @@ $lot_id = (int) ($_GET['id'] ?? 0);
 $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
-    http_response_code(HTTP_NOT_FOUND);
+    http_response_code(HttpCodeEnum::NOT_FOUND->value);
     exit('Страница не найдена');
 }
 
@@ -28,7 +28,7 @@ $page_content = include_template('layout/main.php', [
     'user' => $user,
     'categories' => $categories,
     'main_content' => $main_content,
-    'main_class' => '',
+    'main_classname' => '',
 ]);
 
 echo $page_content;

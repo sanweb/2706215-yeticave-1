@@ -163,6 +163,12 @@ function get_recent_lots(mysqli $connection, int $limit = LIMIT_RECENT_LOTS): ar
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+/**
+ * @param mysqli $connection
+ * @param int $id
+ *
+ * @return array|null
+ */
 function get_lot_by_id(mysqli $connection, int $id): ?array
 {
     $sql = <<<SQL
@@ -189,6 +195,12 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
     return mysqli_fetch_assoc($result);
 }
 
+/**
+ * @param mysqli $connection
+ * @param array $data
+ *
+ * @return int
+ */
 function add_lot(mysqli $connection, array $data): int
 {
     $sql = <<<SQL

@@ -24,7 +24,7 @@ $use_slug_modifier = $use_slug_modifier ?? false;
         }
 
         $category_id = (int) ($category['id'] ?? 0);
-        $category_url = "/all-lots.php?category_id={$category_id}";
+        $category_url = "/index.php?category_id={$category_id}";
         ?>
 
         <li class="<?= esc($item_classes) ?>">
