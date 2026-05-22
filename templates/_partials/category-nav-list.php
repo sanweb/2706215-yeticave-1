@@ -1,7 +1,7 @@
 <?php
 
-/** @var array $categories */
-/** @var bool $is_promo */
+/** @var array  $categories */
+/** @var bool   $is_promo */
 
 ?>
 

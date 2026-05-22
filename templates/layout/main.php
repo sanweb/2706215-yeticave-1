@@ -1,13 +1,13 @@
 <?php
 
 /** @var string $page_title */
-/** @var bool $is_auth */
-/** @var array $user */
+/** @var bool   $is_auth */
+/** @var array  $user */
 /** @var string $main_classname */
 /** @var string $main_content */
-/** @var array $categories */
-/** @var array $css_files */
-/** @var array $js_files */
+/** @var array  $categories */
+/** @var array  $css_files */
+/** @var array  $js_files */
 
 $css_files = $css_files ?? [];
 $js_files = $js_files ?? [];

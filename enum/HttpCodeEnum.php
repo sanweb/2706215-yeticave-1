@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 enum HttpCodeEnum: int
 {
-    case OK = 200;
+    case OK        = 200;
     case FORBIDDEN = 403;
     case NOT_FOUND = 404;
 }
