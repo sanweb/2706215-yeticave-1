@@ -10,7 +10,8 @@ const SECONDS_PER_HOUR   = SECONDS_PER_MINUTE * 60;
 const DEFAULT_MYSQL_PORT = 3306;
 
 // URLs
-const HOMEPAGE_URL = '/';
+const HOMEPAGE_URL  = '/';
+const ERROR_404_URL = '/404.php';
 
 // Lots
 const LIMIT_RECENT_LOTS = 6;

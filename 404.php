@@ -16,11 +16,11 @@ $main_content = include_template('404.php', [
 ]);
 
 $page_content = include_template('layout/main.php', [
-    'page_title' => '404 Страница не найдена',
-    'is_auth' => $is_auth,
-    'user' => $user,
-    'categories' => $categories,
-    'main_content' => $main_content,
+    'page_title'     => '404 Страница не найдена',
+    'is_auth'        => $is_auth,
+    'user'           => $user,
+    'categories'     => $categories,
+    'main_content'   => $main_content,
     'main_classname' => '',
 ]);
 

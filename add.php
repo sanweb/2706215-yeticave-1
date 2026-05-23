@@ -37,20 +37,20 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
 }
 
 $main_content = include_template('add-lot.php', [
-    'categories' => $categories,
-    'form_data' => $form_data,
+    'categories'  => $categories,
+    'form_data'   => $form_data,
     'form_errors' => $form_errors,
 ]);
 
 $page_content = include_template('layout/main.php', [
-    'page_title' => 'Добавление лота',
-    'is_auth' => $is_auth,
-    'user' => $user,
-    'categories' => $categories,
-    'main_content' => $main_content,
+    'page_title'     => 'Добавление лота',
+    'is_auth'        => $is_auth,
+    'user'           => $user,
+    'categories'     => $categories,
+    'main_content'   => $main_content,
     'main_classname' => '',
-    'css_files' => ['/assets/css/flatpickr.min.css'],
-    'js_files' => ['/assets/js/flatpickr.js', '/assets/js/script.js'],
+    'css_files'      => ['/assets/css/flatpickr.min.css'],
+    'js_files'       => ['/assets/js/flatpickr.js', '/assets/js/script.js'],
 ]);
 
 echo $page_content;

@@ -23,7 +23,7 @@ $db_connection = db_connect($db_config);
 
 $is_auth = (bool) rand(0, 1);
 $user = [
-    'id' => 1,
+    'id'   => 1,
     'name' => 'Александр',
 ];
 
