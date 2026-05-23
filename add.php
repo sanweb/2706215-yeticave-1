@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
         $form_errors
     );
 
-    process_image_file($form_data, $form_errors);
+    process_lot_image($form_data, $form_errors);
 
     if (empty($form_errors)) {
         $data = build_add_lot_form_data($form_data, $user);
