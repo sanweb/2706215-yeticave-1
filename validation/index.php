@@ -22,11 +22,12 @@ function validate_form_data(array $rules = [], array $form_data = [], array $for
                 continue;
             }
 
-            list($validator_func, $params) = parse_validator($validator_string);
+            [$validator_func, $params] = parse_validator($validator_string);
 
             if (is_callable($validator_func)) {
                 //$error_message = call_user_func($validator_func, $field, $form_data, $params);
                 $error_message = $validator_func($field, $form_data, $params);
+                $form_errors[$field] = $error_message;
                 //dd([$field, $validator_func, $params, $error_message]);
             } else {
                 // error
@@ -34,9 +35,7 @@ function validate_form_data(array $rules = [], array $form_data = [], array $for
             }
         }
 
-        if ($error_message) {
-            $form_errors[$field] = $error_message;
-        } else {
+        if ($error_message == null) {
             unset($form_errors[$field]);
         }
     }
@@ -46,6 +45,11 @@ function validate_form_data(array $rules = [], array $form_data = [], array $for
     return $form_errors;
 }
 
+/**
+ * @param string $validator_string
+ *
+ * @return array
+ */
 function parse_validator(string $validator_string): array
 {
     $validator_alias = null;
@@ -56,10 +60,11 @@ function parse_validator(string $validator_string): array
     if (strpos($validator_string, VALIDATOR_SEPARATOR) === false) {
         $validator_alias = $validator_string;
     } else {
-        list($validator_alias, $params_string) = explode(VALIDATOR_SEPARATOR, $validator_string, 2);
+        [$validator_alias, $params_string] = explode(VALIDATOR_SEPARATOR, $validator_string, 2);
 
         if (!empty($params_string)) {
-            parse_str($params_string, $params);
+            //parse_str($params_string, $params);
+            $params = parse_validator_params($params_string);
         }
     }
 
@@ -71,4 +76,30 @@ function parse_validator(string $validator_string): array
     }
     //dd([$validator_alias, $validator_func, $params]);
     return [$validator_func, $params];
+}
+
+/**
+ * @param string $params_string
+ *
+ * @return array
+ */
+function parse_validator_params(string $params_string): array
+{
+    $params = [];
+
+    foreach (explode(VALIDATOR_PARAMS_SEPARATOR, $params_string) as $pair) {
+        if ($pair === '') {
+            continue;
+        }
+
+        [$name, $value] = array_pad(explode(VALIDATOR_PARAM_VALUE_SEPARATOR, $pair, 2), 2, '');
+
+        if ($name === '') {
+            continue;
+        }
+
+        $params[$name] = $value;
+    }
+
+    return $params;
 }
