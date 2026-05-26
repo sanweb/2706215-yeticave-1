@@ -10,7 +10,7 @@ declare(strict_types=1);
  *
  * @return void
  */
-function process_image_file(array &$form_data, array &$form_errors): void
+function process_lot_image(array &$form_data, array &$form_errors): void
 {
     // Image file field
     $file_input_name = 'lot_image_file';

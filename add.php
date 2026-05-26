@@ -16,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
-        FORM_FIELDS[ADD_LOT_FORM_KEY],
+        VALIDATION_RULES[ADD_LOT_FORM_KEY],
         $form_data,
         $form_errors
     );
 
-    process_image_file($form_data, $form_errors);
+    process_lot_image($form_data, $form_errors);
 
     if (empty($form_errors)) {
         $data = build_add_lot_form_data($form_data, $user);
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
         $added_lot_id = add_lot($db_connection, $data);
 
         if ($added_lot_id) {
-            redirect('/lot.php?id=' . $added_lot_id);
+            redirect_to('/lot.php?id=' . $added_lot_id);
         }
 
         // TODO: Add proper error handling if lot creation fails.

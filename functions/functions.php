@@ -113,8 +113,19 @@ function is_home_page(): bool
  *
  * @return never
  */
-function redirect(string $url): never
+function redirect_to(string $url): never
 {
     header('Location: ' . $url);
     exit;
+}
+
+/**
+ * Data dump helper
+ */
+function dd(mixed ...$args): void
+{
+    echo '<pre>';
+    print_r($args);
+    //var_dump($args);
+    echo '</pre>';
 }
