@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
-        FORM_FIELDS[ADD_LOT_FORM_KEY],
+        VALIDATION_RULES[ADD_LOT_FORM_KEY],
         $form_data,
         $form_errors
     );
