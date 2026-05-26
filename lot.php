@@ -14,7 +14,7 @@ $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
     http_response_code(HttpCodeEnum::NOT_FOUND->value);
-    redirect(ERROR_404_URL);
+    redirect_to(ERROR_404_URL);
 }
 
 $main_content = include_template('lot.php', [

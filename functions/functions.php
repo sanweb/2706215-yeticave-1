@@ -113,7 +113,7 @@ function is_home_page(): bool
  *
  * @return never
  */
-function redirect(string $url): never
+function redirect_to(string $url): never
 {
     header('Location: ' . $url);
     exit;

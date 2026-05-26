@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
         $added_lot_id = add_lot($db_connection, $data);
 
         if ($added_lot_id) {
-            redirect('/lot.php?id=' . $added_lot_id);
+            redirect_to('/lot.php?id=' . $added_lot_id);
         }
 
         // TODO: Add proper error handling if lot creation fails.
