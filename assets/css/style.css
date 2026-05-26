@@ -604,6 +604,8 @@ main.container {
 .lot__image img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .lot__info {
@@ -956,6 +958,8 @@ input:invalid .form__error{
   left: 50%;
   top: 50%;
   display: block;
+  object-fit: contain;
+  object-position: center;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
