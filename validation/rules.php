@@ -7,6 +7,7 @@ const VALIDATOR_PARAMS_SEPARATOR = '&';
 const VALIDATOR_PARAM_VALUE_SEPARATOR = '=';
 
 // Forms
+// TODO: Create enum
 const ADD_LOT_FORM_KEY = 'add-lot';
 
 /**
