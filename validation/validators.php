@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+// TODO: Add prefix for standard validator functions
 const VALIDATOR_MAP = [
     'required' => 'validate_required',
     'int' => 'validate_int',
