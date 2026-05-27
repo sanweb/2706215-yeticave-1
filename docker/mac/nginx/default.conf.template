@@ -1,0 +1,26 @@
+server {
+    listen ${LISTEN_HTTP};
+    server_name localhost;
+    charset utf-8;
+    root /app;
+    index index.html index.php;
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+
+    client_max_body_size 7680K;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass ${PHP_FPM_HOST}:${PHP_FPM_PORT};
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 600;
+        fastcgi_send_timeout 600;
+        fastcgi_buffer_size 512k;
+        fastcgi_buffers 16 512k;
+        include fastcgi_params;
+    }
+}
