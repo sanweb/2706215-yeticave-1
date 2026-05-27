@@ -82,7 +82,17 @@ function get_uploaded_file_extension(string $file_name): string
  */
 function get_uploaded_file_mime_type(string $tmp_name): string|false
 {
-    return mime_content_type($tmp_name);
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+    if ($finfo === false) {
+        return false;
+    }
+
+    $mime_type = finfo_file($finfo, $tmp_name);
+
+    finfo_close($finfo);
+
+    return $mime_type;
 }
 
 /**
