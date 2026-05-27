@@ -13,7 +13,7 @@ function format_price(int $price): string
 {
     $formatted_price = number_format($price, 0, ',', ' ');
 
-    return $formatted_price . ' ₽';
+    return $formatted_price . '<b class="rub">р</b>';
 }
 
 /**
