@@ -78,21 +78,14 @@ function get_uploaded_file_extension(string $file_name): string
  * Returns uploaded file MIME type.
  *
  * @param string $tmp_name Temporary uploaded file path.
+ *
  * @return string|false MIME type on success, false on failure.
  */
 function get_uploaded_file_mime_type(string $tmp_name): string|false
 {
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $finfo = finfo_open(FILEINFO_MIME_TYPE); // finfo_close() is deprecated since PHP 8.5.
 
-    if ($finfo === false) {
-        return false;
-    }
-
-    $mime_type = finfo_file($finfo, $tmp_name);
-
-    finfo_close($finfo);
-
-    return $mime_type;
+    return $finfo ? finfo_file($finfo, $tmp_name) : false;
 }
 
 /**
