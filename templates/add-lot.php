@@ -10,7 +10,7 @@
 
     <?= include_template('_partials/category-nav-list.php', [
         'categories' => $categories,
-        'is_promo' => false,
+        'is_promo'   => false,
     ]) ?>
 
 </nav>
@@ -18,7 +18,8 @@
     class="form form--add-lot container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
     action="add.php"
     method="post"
-    enctype="multipart/form-data">
+    enctype="multipart/form-data"
+>
     <h2>Добавление лота</h2>
     <div class="form__container-two">
 
@@ -31,7 +32,7 @@
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
                 placeholder="Введите наименование лота">
-            <span class="form__error">Введите наименование лота</span>
+            <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
         </div>
 
         <?php $field_name = 'category_id'; ?>
@@ -50,7 +51,7 @@
 
             </select>
 
-            <span class="form__error">Выберите категорию</span>
+            <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
         </div>
     </div>
 
@@ -61,7 +62,7 @@
             id="message"
             name="<?= $field_name ?>"
             placeholder="Напишите описание лота"><?= esc($form_data[$field_name] ?? '') ?></textarea>
-        <span class="form__error">Напишите описание лота</span>
+        <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
     <?php $field_name = 'lot_image_file'; ?>
@@ -78,7 +79,7 @@
                 accept="<?= $allowed_image_types ?>">
             <label for="lot-img">Добавить</label>
         </div>
-        <span class="form__error">Загрузите изображение</span>
+        <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
     <div class="form__container-three">
@@ -104,7 +105,7 @@
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
                 placeholder="0">
-            <span class="form__error">Введите шаг ставки</span>
+            <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
         </div>
 
         <?php $field_name = 'expire_date'; ?>
@@ -117,7 +118,7 @@
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
                 placeholder="Введите дату в формате ГГГГ-ММ-ДД">
-            <span class="form__error">Введите дату завершения торгов</span>
+            <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
         </div>
     </div>
 
