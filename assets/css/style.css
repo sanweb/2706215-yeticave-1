@@ -150,7 +150,7 @@ main.container {
   margin-left: 4px;
   font-size: 0;
   vertical-align: baseline;
-  background: url("../img/rub.svg") 0 0 no-repeat;
+  background: url("/assets/img/rub.svg") 0 0 no-repeat;
 }
 
 /* Хедер */
@@ -198,7 +198,7 @@ main.container {
   width: 20px;
   height: 20px;
   padding: 20px;
-  background: url("../img/search.svg") center no-repeat;
+  background: url("/assets/img/search.svg") center no-repeat;
   opacity: 0.3;
   border: 0;
   font-size: 0;
@@ -429,7 +429,7 @@ main.container {
 
 .promo {
   padding: 58px 0 35px;
-  background: url("../img/promo-bg.png") 3px 17px no-repeat;
+  background: url("/assets/img/promo-bg.png") 3px 17px no-repeat;
 }
 
 .promo__title {
@@ -492,32 +492,32 @@ main.container {
 }
 
 .promo__item--boards .promo__link {
-  background-image: url("../img/category-1.jpg");
+  background-image: url("/assets/img/category-1.jpg");
   background-position: 146px 8px;
 }
 
 .promo__item--attachment .promo__link {
-  background-image: url("../img/category-2.jpg");
+  background-image: url("/assets/img/category-2.jpg");
   background-position: 133px 12px;
 }
 
 .promo__item--boots .promo__link {
-  background-image: url("../img/category-3.jpg");
+  background-image: url("/assets/img/category-3.jpg");
   background-position: 144px 14px;
 }
 
 .promo__item--clothing .promo__link {
-  background-image: url("../img/category-4.jpg");
+  background-image: url("/assets/img/category-4.jpg");
   background-position: 127px 12px;
 }
 
 .promo__item--tools .promo__link {
-  background-image: url("../img/category-5.jpg");
+  background-image: url("/assets/img/category-5.jpg");
   background-position: 123px 13px;
 }
 
 .promo__item--other .promo__link {
-  background-image: url("../img/category-6.jpg");
+  background-image: url("/assets/img/category-6.jpg");
   background-position: 132px 2px;
 }
 
@@ -564,7 +564,7 @@ main.container {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #ffffff url("../img/dropdown.svg") 157px 18px no-repeat;
+  background: #ffffff url("/assets/img/dropdown.svg") 157px 18px no-repeat;
 }
 
 .lots__select:focus {
@@ -671,7 +671,7 @@ main.container {
   left: 9px;
   width: 12px;
   height: 12px;
-  background: url("../img/timer.svg") 0 0 no-repeat;
+  background: url("/assets/img/timer.svg") 0 0 no-repeat;
 }
 
 .timer--finishing {
@@ -816,7 +816,7 @@ main.container {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #ffffff url("../img/dropdown.svg") 328px 16px no-repeat;
+  background: #ffffff url("/assets/img/dropdown.svg") 328px 16px no-repeat;
 }
 
 .form__item select:focus {
@@ -839,7 +839,7 @@ main.container {
 }
 
 .form__input-date {
-  background: #ffffff url("../img/date.svg") 326px 12px no-repeat;
+  background: #ffffff url("/assets/img/date.svg") 326px 12px no-repeat;
 }
 
 .form__error {
@@ -868,21 +868,21 @@ input:invalid .form__error{
 
 .form__item--invalid textarea,
 .form__item--invalid input {
-  background: #ffffff url("../img/error.svg") 97% 11px no-repeat;
+  background: #ffffff url("/assets/img/error.svg") 97% 11px no-repeat;
   border-color: #f84646;
 }
 
 .form__item--invalid select {
-  background: #ffffff url("../img/error.svg") 322px 11px no-repeat;
+  background: #ffffff url("/assets/img/error.svg") 322px 11px no-repeat;
   border-color: #f84646;
 }
 
 .form__item--small.form__item--invalid input {
-  background: #ffffff url("../img/error.svg") 94% 11px no-repeat;
+  background: #ffffff url("/assets/img/error.svg") 94% 11px no-repeat;
 }
 
 .form__item--wide.form__item--invalid textarea {
-  background: #ffffff url("../img/error.svg") 702px 11px no-repeat;
+  background: #ffffff url("/assets/img/error.svg") 702px 11px no-repeat;
 }
 
 .form__input-file {
