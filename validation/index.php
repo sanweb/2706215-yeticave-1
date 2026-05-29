@@ -11,31 +11,25 @@ declare(strict_types=1);
  *
  * @return array<string, string> Updated validation errors indexed by field name.
  */
-function validate_form_data(array $rules = [], array $form_data = [], array $form_errors = []): array
+function validate_form_data(array $rules = [], array $form_data = [], array $form_errors = [], $context = []): array
 {
     foreach ($rules as $field => $validators) {
-        $error_message = null;
+        unset($form_errors[$field]);
 
         foreach ($validators as $validator_string) {
-
-            if ($error_message !== null) {
-                continue;
-            }
-
             [$validator_func, $params] = parse_validator($validator_string);
 
-            if (is_callable($validator_func)) {
-                //$error_message = call_user_func($validator_func, $field, $form_data, $params);
-                $error_message = $validator_func($field, $form_data, $params);
-                $form_errors[$field] = $error_message;
-            } else {
-                // error
-                // TODO: Add proper error handling if validator is not a function.
+            if (!is_callable($validator_func)) {
+                $form_errors[$field] = 'Ошибка валидации';
+                break;
             }
-        }
 
-        if ($error_message == null) {
-            unset($form_errors[$field]);
+            $error_message = $validator_func($field, $form_data, $params, $context);
+
+            if ($error_message !== null) {
+                $form_errors[$field] = $error_message;
+                break;
+            }
         }
     }
 
@@ -63,6 +57,7 @@ function parse_validator(string $validator_string): array
         }
     }
 
+    //$validator_func = VALIDATOR_FUNCTION_PREFIX . $validator_alias;
     if (isset(VALIDATOR_MAP[$validator_alias])) {
         $validator_func = VALIDATOR_MAP[$validator_alias];
     } else {

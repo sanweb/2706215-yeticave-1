@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_errors = validate_form_data(
         VALIDATION_RULES[ADD_LOT_FORM_KEY],
         $form_data,
-        $form_errors
+        $form_errors,
+        ['db' => $db_connection]
     );
 
     process_lot_image($form_data, $form_errors);
