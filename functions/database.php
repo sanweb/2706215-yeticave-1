@@ -110,7 +110,7 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
  *
  * @return int
  */
-function add_lot(mysqli $connection, array $data): int
+function create_lot(mysqli $connection, array $data): int
 {
     $sql = <<<SQL
         INSERT INTO lots (
@@ -129,6 +129,32 @@ function add_lot(mysqli $connection, array $data): int
 
     if (mysqli_stmt_affected_rows($stmt) !== 1) {
         exit('Ошибка добавления лота');
+    }
+
+    return mysqli_insert_id($connection);
+}
+
+/**
+ * @param mysqli $connection
+ * @param array $data
+ *
+ * @return int
+ */
+function create_user(mysqli $connection, array $data): int
+{
+    $sql = <<<SQL
+        INSERT INTO users (
+            `email`,
+            `name`,
+            `password_hash`,
+            `contact_info`
+        ) VALUES (?, ?, ?, ?)
+    SQL;
+
+    $stmt = execute_stmt($connection, $sql, 'ssss', $data);
+
+    if (mysqli_stmt_affected_rows($stmt) !== 1) {
+        exit('Ошибка создания аккаунта');
     }
 
     return mysqli_insert_id($connection);

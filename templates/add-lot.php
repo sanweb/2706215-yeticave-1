@@ -14,6 +14,7 @@
     ]) ?>
 
 </nav>
+<?php $form_name = 'create-lot-form'; ?>
 <form
     class="form form--add-lot container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
     action="add.php"
@@ -25,9 +26,9 @@
 
         <?php $field_name = 'title'; ?>
         <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-            <label for="lot-name">Наименование <sup>*</sup></label>
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Наименование <sup>*</sup></label>
             <input
-                id="lot-name"
+                id="<?= build_form_field_id($form_name, $field_name) ?>"
                 type="text"
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
@@ -37,8 +38,8 @@
 
         <?php $field_name = 'category_id'; ?>
         <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-            <label for="category">Категория <sup>*</sup></label>
-            <select id="category" name="<?= $field_name ?>">
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Категория <sup>*</sup></label>
+            <select id="<?= build_form_field_id($form_name, $field_name) ?>" name="<?= $field_name ?>">
                 <option value="">Выберите категорию</option>
 
                 <?php foreach ($categories as $category): ?>
@@ -57,9 +58,9 @@
 
     <?php $field_name = 'description'; ?>
     <div class="form__item form__item--wide<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="message">Описание <sup>*</sup></label>
+        <label for="<?= build_form_field_id($form_name, $field_name) ?>">Описание <sup>*</sup></label>
         <textarea
-            id="message"
+            id="<?= build_form_field_id($form_name, $field_name) ?>"
             name="<?= $field_name ?>"
             placeholder="Напишите описание лота"><?= esc($form_data[$field_name] ?? '') ?></textarea>
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
@@ -74,10 +75,10 @@
                 class="visually-hidden"
                 type="file"
                 name="<?= $field_name ?>"
-                id="lot-img"
+                id="<?= build_form_field_id($form_name, $field_name) ?>"
                 value=""
                 accept="<?= $allowed_image_types ?>">
-            <label for="lot-img">Добавить</label>
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Добавить</label>
         </div>
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
@@ -86,9 +87,9 @@
 
         <?php $field_name = 'start_price'; ?>
         <div class="form__item form__item--small<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-            <label for="lot-rate">Начальная цена <sup>*</sup></label>
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Начальная цена <sup>*</sup></label>
             <input
-                id="lot-rate"
+                id="<?= build_form_field_id($form_name, $field_name) ?>"
                 type="text"
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
@@ -98,9 +99,9 @@
 
         <?php $field_name = 'bet_step'; ?>
         <div class="form__item form__item--small<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-            <label for="lot-step">Шаг ставки <sup>*</sup></label>
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Шаг ставки <sup>*</sup></label>
             <input
-                id="lot-step"
+                id="<?= build_form_field_id($form_name, $field_name) ?>"
                 type="text"
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"
@@ -110,10 +111,10 @@
 
         <?php $field_name = 'expire_date'; ?>
         <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-            <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
+            <label for="<?= build_form_field_id($form_name, $field_name) ?>">Дата окончания торгов <sup>*</sup></label>
             <input
                 class="form__input-date"
-                id="lot-date"
+                id="<?= build_form_field_id($form_name, $field_name) ?>"
                 type="text"
                 name="<?= $field_name ?>"
                 value="<?= esc($form_data[$field_name] ?? '') ?>"

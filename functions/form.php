@@ -40,7 +40,7 @@ function process_lot_image(array &$form_data, array &$form_errors): void
  *
  * @return array<int, mixed> Ordered values for prepared statement binding.
  */
-function build_add_lot_form_data(array $form_data, array $user): array
+function build_create_lot_form_data(array $form_data, array $user): array
 {
     return [
         (int) ($user['id'] ?? 0),
@@ -52,4 +52,29 @@ function build_add_lot_form_data(array $form_data, array $user): array
         (int) $form_data['bet_step'],
         $form_data['expire_date'],
     ];
+}
+
+function build_create_user_form_data(array $form_data): array
+{
+    $password_hash = password_hash($form_data['password'], PASSWORD_DEFAULT);
+
+    return [
+        $form_data['email'],
+        $form_data['name'],
+        $password_hash,
+        $form_data['contact_info'],
+    ];
+}
+
+/**
+ * Builds an HTML field ID based on form and field names.
+ *
+ * @param string $form_name Form name.
+ * @param string $field_name Field name.
+ *
+ * @return string Field ID.
+ */
+function build_form_field_id(string $form_name, string $field_name): string
+{
+    return $form_name . '-' . $field_name;
 }

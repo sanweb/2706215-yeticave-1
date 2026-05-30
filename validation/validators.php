@@ -29,7 +29,9 @@ const VALIDATOR_MAP = [
     'int'      => 'validate_int',
     'string'   => 'validate_string',
     'date'     => 'validate_date',
+    'email'     => 'validate_email',
     'exists'   => 'validate_exists',
+    'unique'   => 'validate_unique',
 ];
 
 /**
@@ -59,6 +61,7 @@ function validate_required(string $field, array $data, array $params = [], array
  * @param string $field
  * @param array $data
  * @param array $params
+ * @param array $context
  *
  * @return string|null
  */
@@ -83,6 +86,7 @@ function validate_int(string $field, array $data, array $params = [], array $con
  * @param string $field
  * @param array $data
  * @param array $params
+ * @param array $context
  *
  * @return string|null
  */
@@ -107,6 +111,28 @@ function validate_string(string $field, array $data, array $params = [], array $
  * @param string $field
  * @param array $data
  * @param array $params
+ * @param array $context
+ *
+ * @return string|null
+ */
+function validate_email(string $field, array $data, array $params = [], array $context = []): ?string
+{
+    if (!isset($data[$field])) {
+        $message = null;
+    } elseif (filter_var($data[$field], FILTER_VALIDATE_EMAIL) === false) {
+        $message = 'Введите e-mail';
+    }
+
+    return $message ?? null;
+}
+
+/**
+ * Validator
+ *
+ * @param string $field
+ * @param array $data
+ * @param array $params
+ * @param array $context
  *
  * @return string|null
  */
@@ -134,6 +160,7 @@ function validate_date(string $field, array $data, array $params = [], array $co
  * @param string $field
  * @param array $data
  * @param array $params
+ * @param array $context
  *
  * @return string|null
  */
@@ -149,6 +176,33 @@ function validate_exists(string $field, array $data, array $params = [], array $
         $message = 'Ошибка валидации';
     } elseif (!is_db_value_exists($db_connection, $params['target'], $data[$field])) {
         $message = 'Недопустимое значение';
+    }
+
+    return $message ?? null;
+}
+
+/**
+ * Validator
+ *
+ * @param string $field
+ * @param array $data
+ * @param array $params
+ * @param array $context
+ *
+ * @return string|null
+ */
+function validate_unique(string $field, array $data, array $params = [], array $context = []): ?string
+{
+    $db_connection = $context['db'] ?? null;
+
+    if (!isset($data[$field]) || is_empty($data[$field])) {
+        $message = null;
+    } elseif (!$db_connection instanceof mysqli) {
+        $message = 'Ошибка валидации';
+    } elseif (!isset($params['target']) || !is_exists_validator_allowed_target((string) $params['target'])) {
+        $message = 'Ошибка валидации';
+    } elseif (is_db_value_exists($db_connection, $params['target'], $data[$field])) {
+        $message = 'Значение уже используется';
     }
 
     return $message ?? null;

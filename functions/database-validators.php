@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 const EXISTS_VALIDATOR_ALLOWED_TARGETS = [
     'categories.id' => ['categories', 'id', 'i'],
+    'users.email' => ['users', 'email', 's'],
 ];
 
 /**
