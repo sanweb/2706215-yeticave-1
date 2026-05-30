@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Allowed database targets for existence checks.
- *
- * Format:
- * target => [table name, column name, mysqli bind type]
- *
- * @var array<string, array{0: string, 1: string, 2: string}>
- */
-const EXISTS_ALLOWED_TARGETS = [
-    'categories.id' => ['categories', 'id', 'i'],
-];
-
 // TODO: Replace exit() calls with exceptions and show errors on the error.php page.
 
 /**
@@ -144,38 +132,4 @@ function add_lot(mysqli $connection, array $data): int
     }
 
     return mysqli_insert_id($connection);
-}
-
-/**
- * @param mysqli $connection
- * @param string $target
- * @param string $value
- *
- * @return bool
- */
-
-function is_db_value_exists(mysqli $connection, string $target, string $value): bool
-{
-    if (isset(EXISTS_ALLOWED_TARGETS[$target])) {
-        [$table, $column, $type] = EXISTS_ALLOWED_TARGETS[$target];
-
-        if ($type === 'i') {
-            $value = (int) $value;
-        } elseif ($type === 'd') {
-            $value = (float) $value;
-        } else {
-            $value = (string) $value;
-        }
-
-        $sql = "SELECT 1 FROM `$table` WHERE `$column` = ? LIMIT 1";
-        $result = get_stmt_result($connection, $sql, $type, [$value]);
-        $is_exist = (bool) mysqli_fetch_assoc($result);
-    }
-
-    return $is_exist ?? false;
-}
-
-function is_exists_target_allowed(string $target): bool
-{
-    return isset(EXISTS_ALLOWED_TARGETS[$target]);
 }

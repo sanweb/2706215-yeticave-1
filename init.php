@@ -13,6 +13,7 @@ require_once BASE_PATH . '/functions/helpers.php';
 require_once BASE_PATH . '/functions/functions.php';
 require_once BASE_PATH . '/functions/database-core.php';
 require_once BASE_PATH . '/functions/database.php';
+require_once BASE_PATH . '/functions/database-validators.php';
 require_once BASE_PATH . '/validation/rules.php';
 require_once BASE_PATH . '/validation/validators.php';
 require_once BASE_PATH . '/validation/index.php';

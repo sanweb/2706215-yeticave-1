@@ -145,7 +145,7 @@ function validate_exists(string $field, array $data, array $params = [], array $
         $message = null;
     } elseif (!$db_connection instanceof mysqli) {
         $message = 'Ошибка валидации';
-    } elseif (!isset($params['target']) || !is_exists_target_allowed($params['target'])) {
+    } elseif (!isset($params['target']) || !is_exists_validator_allowed_target((string) $params['target'])) {
         $message = 'Ошибка валидации';
     } elseif (!is_db_value_exists($db_connection, $params['target'], $data[$field])) {
         $message = 'Недопустимое значение';
