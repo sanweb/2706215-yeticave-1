@@ -14,18 +14,13 @@ $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
     http_response_code(HttpCodeEnum::NOT_FOUND->value);
-
-    $page_title = '404 Страница не найдена';
-    $main_content = include_template('404.php', [
-        'categories' => $categories,
-    ]);
-} else {
-    $page_title = $lot['title'] ?? '';
-    $main_content = include_template('lot.php', [
-        'categories' => $categories,
-        'lot'        => $lot,
-    ]);
 }
+
+$page_title = $lot ? $lot['title'] : '404 Страница не найдена';
+$main_template = $lot ? 'lot.php' : '404.php';
+$main_data = $lot ? compact('lot') : [];
+
+$main_content = include_template($main_template, array_merge(['categories' => $categories], $main_data));
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => $page_title,
