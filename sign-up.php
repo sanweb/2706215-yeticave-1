@@ -5,9 +5,9 @@ declare(strict_types=1);
 require_once __DIR__ . '/init.php';
 
 /** @var mysqli $db_connection */
-/** @var bool $is_auth */
-/** @var array $user */
-/** @var array $categories */
+/** @var bool   $is_auth */
+/** @var array  $user */
+/** @var array  $categories */
 
 $form_data = [];
 $form_errors = [];
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
             redirect_to('/login.php');
         }
 
-        // TODO: Add proper error handling if lot creation fails.
+        // TODO: Add proper error handling if user creation fails.
     }
 }
 
