@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
 
 $main_content = include_template('sign-up.php', [
     'categories'  => $categories,
+    'form_name'   => CREATE_USER_FORM_KEY,
     'form_data'   => $form_data,
     'form_errors' => $form_errors,
 ]);

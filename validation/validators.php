@@ -23,16 +23,42 @@ declare(strict_types=1);
  * in the signature to make all validators callable in the same way.
  */
 
-// TODO: Replace with VALIDATOR_FUNCTION_PREFIX to simpify adding and usage validators?
-const VALIDATOR_MAP = [
-    'required' => 'validate_required',
-    'int'      => 'validate_int',
-    'string'   => 'validate_string',
-    'date'     => 'validate_date',
-    'email'     => 'validate_email',
-    'exists'   => 'validate_exists',
-    'unique'   => 'validate_unique',
+// Available validators
+const REGISTERED_VALIDATORS = [
+    'required',
+    'int',
+    'string',
+    'date',
+    'email',
+    'exists',
+    'unique',
 ];
+
+// Validator function prefix
+const VALIDATOR_FUNCTION_PREFIX = 'validate_';
+
+/**
+ * @param string $validator_alias
+ *
+ * @return callable|null Validator function if it is defined or null otherwise.
+ */
+function get_validator_function(string $validator_alias): ?callable
+{
+    if (in_array($validator_alias, REGISTERED_VALIDATORS, true)) {
+        $validator_func = VALIDATOR_FUNCTION_PREFIX . $validator_alias;
+    } /* else {
+        exit('Попытка применения незарегистрированного валидатора');
+    } */
+
+    if (!isset($validator_func) || !is_callable($validator_func)) {
+        $validator_func = null;
+        //exit('Ошибка получения функции валидации');
+    }
+
+    // TODO: Add proper error handling if validator function is not defined.
+
+    return $validator_func ?? null;
+}
 
 /**
  * Validates that field value is not empty.

@@ -2,16 +2,6 @@
 
 declare(strict_types=1);
 
-const VALIDATOR_SEPARATOR = ':';
-const VALIDATOR_PARAMS_SEPARATOR = '&';
-const VALIDATOR_PARAM_VALUE_SEPARATOR = '=';
-//const VALIDATOR_FUNCTION_PREFIX = 'validate_';
-
-// Forms
-// TODO: Create enum?
-const CREATE_LOT_FORM_KEY = 'create-lot';
-const CREATE_USER_FORM_KEY = 'create-user';
-
 /**
  * Required form fields grouped by form key.
  *

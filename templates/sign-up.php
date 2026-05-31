@@ -1,9 +1,10 @@
 <?php
 
-/** @var array $categories */
-/** @var array $lot */
-/** @var array $form_data */
-/** @var array $form_errors */
+/** @var array  $categories */
+/** @var array  $lot */
+/** @var string $form_name */
+/** @var array  $form_data */
+/** @var array  $form_errors */
 
 ?>
 <nav class="nav">
@@ -14,59 +15,67 @@
     ]) ?>
 
 </nav>
-<?php $form_name = 'create-user-form'; ?>
 <form
     class="form container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
     action="sign-up.php"
     method="post"
     name="<?= $form_name ?>"
     enctype="application/x-www-form-urlencoded"
-    autocomplete="off">
+    autocomplete="off"
+>
     <h2>Регистрация нового аккаунта</h2>
 
     <?php $field_name = 'email'; ?>
+    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
     <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= build_form_field_id($form_name, $field_name) ?>">E-mail <sup>*</sup></label>
+        <label for="<?= $field_id ?>">E-mail <sup>*</sup></label>
         <input
-            id="<?= build_form_field_id($form_name, $field_name) ?>"
+            id="<?= $field_id ?>"
             type="text"
             name="<?= $field_name ?>"
             value="<?= esc($form_data[$field_name] ?? '') ?>"
-            placeholder="Введите e-mail">
+            placeholder="Введите e-mail"
+        >
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
     <?php $field_name = 'password'; ?>
+    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
     <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= build_form_field_id($form_name, $field_name) ?>">Пароль <sup>*</sup></label>
+        <label for="<?= $field_id ?>">Пароль <sup>*</sup></label>
         <input
-            id="<?= build_form_field_id($form_name, $field_name) ?>"
+            id="<?= $field_id ?>"
             type="password"
             name="<?= $field_name ?>"
             value="<?= esc($form_data[$field_name] ?? '') ?>"
-            placeholder="Введите пароль">
+            placeholder="Введите пароль"
+        >
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
     <?php $field_name = 'name'; ?>
+    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
     <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= build_form_field_id($form_name, $field_name) ?>">Имя <sup>*</sup></label>
+        <label for="<?= $field_id ?>">Имя <sup>*</sup></label>
         <input
-            id="<?= build_form_field_id($form_name, $field_name) ?>"
+            id="<?= $field_id ?>"
             type="text"
             name="<?= $field_name ?>"
             value="<?= esc($form_data[$field_name] ?? '') ?>"
-            placeholder="Введите имя">
+            placeholder="Введите имя"
+        >
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
     <?php $field_name = 'contact_info'; ?>
+    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
     <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= build_form_field_id($form_name, $field_name) ?>">Контактные данные <sup>*</sup></label>
+        <label for="<?= $field_id ?>">Контактные данные <sup>*</sup></label>
         <textarea
-            id="<?= build_form_field_id($form_name, $field_name) ?>"
+            id="<?= $field_id ?>"
             name="<?= $field_name ?>"
-            placeholder="Напишите как с вами связаться"><?= esc($form_data[$field_name] ?? '') ?></textarea>
+            placeholder="Напишите как с вами связаться"
+        ><?= esc($form_data[$field_name] ?? '') ?></textarea>
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 

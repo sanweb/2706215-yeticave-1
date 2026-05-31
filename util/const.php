@@ -24,9 +24,13 @@ const ALLOWED_IMAGE_TYPES = [
     'jpg'  => 'image/jpeg',
     'jpeg' => 'image/jpeg',
     'png'  => 'image/png',
-    'webp' => 'image/webp',
 ];
 
 // Assets
 const ASSET_TYPE_CSS = 'css';
 const ASSET_TYPE_JS  = 'js';
+
+// Forms
+// TODO: Create enum?
+const CREATE_LOT_FORM_KEY = 'create-lot-form';
+const CREATE_USER_FORM_KEY = 'create-user-form';

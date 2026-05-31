@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
 
 $main_content = include_template('add-lot.php', [
     'categories'  => $categories,
+    'form_name'   => CREATE_LOT_FORM_KEY,
     'form_data'   => $form_data,
     'form_errors' => $form_errors,
 ]);
