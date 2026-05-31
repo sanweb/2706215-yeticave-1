@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Allowed database targets for existence checks.
- *
- * Format:
- * target => [table name, column name, mysqli bind type]
- *
- * @var array<string, array{0: string, 1: string, 2: string}>
- */
-const EXISTS_ALLOWED_TARGETS = [
-    'categories.id' => ['categories', 'id', 'i'],
-];
-
 // TODO: Replace exit() calls with exceptions and show errors on the error.php page.
 
 /**
@@ -122,7 +110,7 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
  *
  * @return int
  */
-function add_lot(mysqli $connection, array $data): int
+function create_lot(mysqli $connection, array $data): int
 {
     $sql = <<<SQL
         INSERT INTO lots (
@@ -148,34 +136,26 @@ function add_lot(mysqli $connection, array $data): int
 
 /**
  * @param mysqli $connection
- * @param string $target
- * @param string $value
+ * @param array $data
  *
- * @return bool
+ * @return int
  */
-
-function is_db_value_exists(mysqli $connection, string $target, string $value): bool
+function create_user(mysqli $connection, array $data): int
 {
-    if (isset(EXISTS_ALLOWED_TARGETS[$target])) {
-        [$table, $column, $type] = EXISTS_ALLOWED_TARGETS[$target];
+    $sql = <<<SQL
+        INSERT INTO users (
+            `email`,
+            `name`,
+            `password_hash`,
+            `contact_info`
+        ) VALUES (?, ?, ?, ?)
+    SQL;
 
-        if ($type === 'i') {
-            $value = (int) $value;
-        } elseif ($type === 'd') {
-            $value = (float) $value;
-        } else {
-            $value = (string) $value;
-        }
+    $stmt = execute_stmt($connection, $sql, 'ssss', $data);
 
-        $sql = "SELECT 1 FROM `$table` WHERE `$column` = ? LIMIT 1";
-        $result = get_stmt_result($connection, $sql, $type, [$value]);
-        $is_exist = (bool) mysqli_fetch_assoc($result);
+    if (mysqli_stmt_affected_rows($stmt) !== 1) {
+        exit('Ошибка создания аккаунта');
     }
 
-    return $is_exist ?? false;
-}
-
-function is_exists_target_allowed(string $target): bool
-{
-    return isset(EXISTS_ALLOWED_TARGETS[$target]);
+    return mysqli_insert_id($connection);
 }

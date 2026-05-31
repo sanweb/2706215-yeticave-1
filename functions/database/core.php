@@ -67,7 +67,11 @@ function execute_stmt(mysqli $connection, string $sql, string $types = '', array
         exit('Ошибка подготовки SQL-запроса: ' . mysqli_error($connection));
     }
 
-    if (!mysqli_stmt_bind_param($stmt, $types, ...$params)) {
+    if (count($params) !== strlen($types)) {
+        exit('Количество типов не совпадает с количеством параметров запроса');
+    }
+
+    if ($params !== [] && !mysqli_stmt_bind_param($stmt, $types, ...$params)) {
         exit('Ошибка привязки параметров запроса: ' . mysqli_stmt_error($stmt));
     }
 

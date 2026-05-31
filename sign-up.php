@@ -16,43 +16,39 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
-        VALIDATION_RULES[CREATE_LOT_FORM_KEY],
+        VALIDATION_RULES[CREATE_USER_FORM_KEY],
         $form_data,
         $form_errors,
         ['db' => $db_connection]
     );
 
-    process_lot_image($form_data, $form_errors);
-
     if (empty($form_errors)) {
-        $data = build_create_lot_form_data($form_data, $user);
+        $data = build_create_user_form_data($form_data);
 
-        $lot_id = create_lot($db_connection, $data);
+        $user_id = create_user($db_connection, $data);
 
-        if ($lot_id) {
-            redirect_to('/lot.php?id=' . $lot_id);
+        if ($user_id) {
+            redirect_to('/login.php');
         }
 
         // TODO: Add proper error handling if lot creation fails.
     }
 }
 
-$main_content = include_template('add-lot.php', [
+$main_content = include_template('sign-up.php', [
     'categories'  => $categories,
-    'form_name'   => CREATE_LOT_FORM_KEY,
+    'form_name'   => CREATE_USER_FORM_KEY,
     'form_data'   => $form_data,
     'form_errors' => $form_errors,
 ]);
 
 $page_content = include_template('layout/main.php', [
-    'page_title'     => 'Добавление лота',
+    'page_title'     => 'Регистрация',
     'is_auth'        => $is_auth,
     'user'           => $user,
     'categories'     => $categories,
     'main_content'   => $main_content,
     'main_classname' => '',
-    'css_files'      => ['/assets/css/flatpickr.min.css'],
-    'js_files'       => ['/assets/js/flatpickr.js', '/assets/js/script.js'],
 ]);
 
 echo $page_content;
