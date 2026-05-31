@@ -22,4 +22,8 @@ const VALIDATION_RULES = [
         'password'     => ['required', 'string:min=8&max=128'],
         'contact_info' => ['required', 'string:min=30'],
     ],
+    LOGIN_USER_FORM_KEY => [
+        'email'        => ['required', 'email', 'exists:target=users.email'],
+        'password'     => ['required', 'string:min=8&max=128'],
+    ],
 ];

@@ -113,7 +113,7 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
 function create_lot(mysqli $connection, array $data): int
 {
     $sql = <<<SQL
-        INSERT INTO lots (
+        INSERT INTO `lots` (
             `author_id`,
             `category_id`,
             `title`,
@@ -143,7 +143,7 @@ function create_lot(mysqli $connection, array $data): int
 function create_user(mysqli $connection, array $data): int
 {
     $sql = <<<SQL
-        INSERT INTO users (
+        INSERT INTO `users` (
             `email`,
             `name`,
             `password_hash`,
@@ -158,4 +158,28 @@ function create_user(mysqli $connection, array $data): int
     }
 
     return mysqli_insert_id($connection);
+}
+
+/**
+ * @param mysqli $connection
+ * @param string $email
+ *
+ * @return array|null
+ */
+function get_user_by_email(mysqli $connection, string $email): ?array
+{
+    $sql = <<<SQL
+        SELECT
+            `id`,
+            `email`,
+            `name`,
+            `password_hash`,
+            `contact_info`
+        FROM `users`
+        WHERE users.`email` = ?
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 's', [$email]);
+
+    return mysqli_fetch_assoc($result);
 }

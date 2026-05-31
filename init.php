@@ -15,15 +15,15 @@ require_once BASE_PATH . '/functions/database/index.php';
 require_once BASE_PATH . '/validation/index.php';
 require_once BASE_PATH . '/functions/upload.php';
 require_once BASE_PATH . '/functions/form.php';
+require_once BASE_PATH . '/functions/auth.php';
 
 $db_config = require BASE_PATH . '/config/db.php';
 
 $db_connection = db_connect($db_config);
 
-$is_auth = (bool) rand(0, 1);
-$user = [
-    'id'   => 1,
-    'name' => 'Александр',
-];
+session_start();
+
+$is_auth = is_auth();
+$user = $is_auth ? $_SESSION['user'] : null;
 
 $categories = get_all_categories($db_connection);
