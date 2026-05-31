@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
         if (!empty($user) && authenticate_user($user, $password)) {
             // authorized
             redirect_to('/');
+        } else {
+            $form_errors['password'] = 'Неправильный логин или пароль';
         }
-
-        // TODO: Add proper error handling if user auth fails.
     }
 }
 
