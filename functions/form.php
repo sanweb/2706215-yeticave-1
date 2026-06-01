@@ -56,7 +56,7 @@ function build_create_lot_form_data(array $form_data, array $user): array
 
 function build_create_user_form_data(array $form_data): array
 {
-    $password_hash = generate_password_hash($form_data['password']);
+    $password_hash = password_hash($form_data['password'], PASSWORD_DEFAULT);
 
     return [
         $form_data['email'],

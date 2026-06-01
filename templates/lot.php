@@ -41,7 +41,7 @@
                         Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0) ?></span>
                     </div>
                 </div>
-                <?php if (is_auth()): ?>
+                <?php if (is_auth() && ($lot['author_id'] ?? 0) !== get_user_id()): ?>
                     <!-- Bet form (not required yet) -->
                 <?php endif; ?>
             </div>

@@ -24,6 +24,6 @@ $db_connection = db_connect($db_config);
 session_start();
 
 $is_auth = is_auth();
-$user = $is_auth ? $_SESSION['user'] : null;
+$user = $is_auth ? get_auth_user() : null;
 
 $categories = get_all_categories($db_connection);

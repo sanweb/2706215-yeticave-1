@@ -174,7 +174,9 @@ function get_user_by_email(mysqli $connection, string $email): ?array
             `email`,
             `name`,
             `password_hash`,
-            `contact_info`
+            `contact_info`,
+            `created_at`,
+            `updated_at`
         FROM `users`
         WHERE users.`email` = ?
     SQL;
