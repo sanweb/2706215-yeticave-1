@@ -21,28 +21,32 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
-        VALIDATION_RULES[CREATE_USER_FORM_KEY],
+        VALIDATION_RULES[LOGIN_USER_FORM_KEY],
         $form_data,
         $form_errors,
         ['db' => $db_connection]
     );
 
     if (empty($form_errors)) {
-        $data = build_create_user_form_data($form_data);
+        $email = $form_data['email'] ?? '';
+        $password = $form_data['password'] ?? '';
 
-        $user_id = create_user($db_connection, $data);
+        $user = get_user_by_email($db_connection, $email);
 
-        if ($user_id) {
-            redirect_to('/login.php');
+        if (!empty($user) && authenticate_user($user, $password)) {
+            // authorized
+            redirect_to('/');
+        } else {
+            $login_error = 'Неправильный логин или пароль';
+            $form_errors['email'] = $login_error;
+            $form_errors['password'] = $login_error;
         }
-
-        // TODO: Add proper error handling if user creation fails.
     }
 }
 
-$main_content = include_template('sign-up.php', [
+$main_content = include_template('login.php', [
     'categories'  => $categories,
-    'form_name'   => CREATE_USER_FORM_KEY,
+    'form_name'   => LOGIN_USER_FORM_KEY,
     'form_data'   => $form_data,
     'form_errors' => $form_errors,
 ]);

@@ -34,3 +34,4 @@ const ASSET_TYPE_JS  = 'js';
 // TODO: Create enum?
 const CREATE_LOT_FORM_KEY = 'create-lot-form';
 const CREATE_USER_FORM_KEY = 'create-user-form';
+const LOGIN_USER_FORM_KEY = 'login-user-form';

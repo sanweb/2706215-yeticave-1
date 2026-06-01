@@ -5,9 +5,14 @@ declare(strict_types=1);
 require_once __DIR__ . '/init.php';
 
 /** @var mysqli $db_connection */
-/** @var bool $is_auth */
-/** @var array $user */
-/** @var array $categories */
+/** @var bool   $is_auth */
+/** @var array  $user */
+/** @var array  $categories */
+
+if (!is_auth()) {
+    //http_response_code(HttpCodeEnum::FORBIDDEN->value);
+    redirect_to('/login.php');
+}
 
 $form_data = [];
 $form_errors = [];

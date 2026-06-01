@@ -17,13 +17,12 @@
 </nav>
 <form
     class="form container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
-    action="sign-up.php"
+    action="login.php"
     method="post"
     name="<?= $form_name ?>"
     enctype="application/x-www-form-urlencoded"
-    autocomplete="off"
 >
-    <h2>Регистрация нового аккаунта</h2>
+    <h2>Вход</h2>
 
     <?php $field_name = 'email'; ?>
     <?php $field_id = build_form_field_id($form_name, $field_name); ?>
@@ -41,7 +40,7 @@
 
     <?php $field_name = 'password'; ?>
     <?php $field_id = build_form_field_id($form_name, $field_name); ?>
-    <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
+    <div class="form__item form__item--last<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
         <label for="<?= $field_id ?>">Пароль <sup>*</sup></label>
         <input
             id="<?= $field_id ?>"
@@ -53,36 +52,9 @@
         <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
     </div>
 
-    <?php $field_name = 'name'; ?>
-    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
-    <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= $field_id ?>">Имя <sup>*</sup></label>
-        <input
-            id="<?= $field_id ?>"
-            type="text"
-            name="<?= $field_name ?>"
-            value="<?= esc($form_data[$field_name] ?? '') ?>"
-            placeholder="Введите имя"
-        >
-        <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
-    </div>
-
-    <?php $field_name = 'contact_info'; ?>
-    <?php $field_id = build_form_field_id($form_name, $field_name); ?>
-    <div class="form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
-        <label for="<?= $field_id ?>">Контактные данные <sup>*</sup></label>
-        <textarea
-            id="<?= $field_id ?>"
-            name="<?= $field_name ?>"
-            placeholder="Напишите как с вами связаться"
-        ><?= esc($form_data[$field_name] ?? '') ?></textarea>
-        <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
-    </div>
-
     <?php if (!empty($form_errors)): ?>
         <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
     <?php endif; ?>
 
-    <button type="submit" class="button">Зарегистрироваться</button>
-    <a class="text-link" href="/login.php">Уже есть аккаунт</a>
+    <button type="submit" class="button">Войти</button>
 </form>

@@ -21,8 +21,7 @@
                     src="<?= esc($lot['image_url'] ?? '') ?>"
                     width="730"
                     height="548"
-                    alt="<?= esc($lot['title'] ?? '') ?>"
-                >
+                    alt="<?= esc($lot['title'] ?? '') ?>">
             </div>
             <p class="lot-item__category">Категория: <span><?= esc($lot['category_name'] ?? '') ?></span></p>
             <p class="lot-item__description"><?= esc($lot['description'] ?? '') ?></p>
@@ -42,7 +41,9 @@
                         Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0) ?></span>
                     </div>
                 </div>
-                <!-- Bet form (not required yet) -->
+                <?php if (is_auth() && ($lot['author_id'] ?? 0) !== get_user_id()): ?>
+                    <!-- Bet form (not required yet) -->
+                <?php endif; ?>
             </div>
             <!-- Bet history (not required yet) -->
         </div>
