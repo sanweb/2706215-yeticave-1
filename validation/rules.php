@@ -23,7 +23,7 @@ const VALIDATION_RULES = [
         'contact_info' => ['required', 'string:min=30'],
     ],
     LOGIN_USER_FORM_KEY => [
-        'email'        => ['required', 'email', 'login_email:target=users.email'],
+        'email'        => ['required', 'email'],
         'password'     => ['required', 'string:max=128'],
     ],
 ];

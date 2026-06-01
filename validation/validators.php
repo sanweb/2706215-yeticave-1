@@ -32,7 +32,6 @@ const REGISTERED_VALIDATORS = [
     'email',
     'exists',
     'unique',
-    'login_email',
 ];
 
 // Validator function prefix
@@ -230,33 +229,6 @@ function validate_unique(string $field, array $data, array $params = [], array $
         $message = 'Ошибка валидации';
     } elseif (is_db_value_exists($db_connection, $params['target'], $data[$field])) {
         $message = 'Значение уже используется';
-    }
-
-    return $message ?? null;
-}
-
-/**
- * Validator
- *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
- *
- * @return string|null
- */
-function validate_login_email(string $field, array $data, array $params = [], array $context = []): ?string
-{
-    $db_connection = $context['db'] ?? null;
-
-    if (!isset($data[$field]) || is_empty($data[$field])) {
-        $message = null;
-    } elseif (!$db_connection instanceof mysqli) {
-        $message = 'Ошибка валидации';
-    } elseif (!isset($params['target']) || !is_exists_validator_allowed_target((string) $params['target'])) {
-        $message = 'Ошибка валидации';
-    } elseif (!is_db_value_exists($db_connection, $params['target'], $data[$field])) {
-        $message = 'Неправильный логин или пароль';
     }
 
     return $message ?? null;

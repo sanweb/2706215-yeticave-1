@@ -37,7 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
             // authorized
             redirect_to('/');
         } else {
-            $form_errors['password'] = 'Неправильный логин или пароль';
+            $login_error = 'Неправильный логин или пароль';
+            $form_errors['email'] = $login_error;
+            $form_errors['password'] = $login_error;
         }
     }
 }
