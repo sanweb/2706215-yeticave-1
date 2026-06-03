@@ -1,7 +1,6 @@
 <?php
 
 /** @var string $page_title */
-/** @var bool   $is_auth */
 /** @var array  $user */
 /** @var string $main_classname */
 /** @var string $main_content */
@@ -30,7 +29,6 @@ $js_files = $js_files ?? [];
     <div class="page-wrapper">
 
         <?= include_template('layout/_header.php', [
-            'is_auth' => $is_auth,
             'user' => $user,
         ]) ?>
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 require_once __DIR__ . '/init.php';
 
 /** @var mysqli $db_connection */
-/** @var bool   $is_auth */
 /** @var array  $user */
 /** @var array  $categories */
 
@@ -14,17 +13,56 @@ $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
     http_response_code(HttpCodeEnum::NOT_FOUND->value);
+    $page_title = '404 Страница не найдена';
+    $main_template = '404.php';
+    $main_data = compact('categories');
+} else {
+    $page_title = $lot['title'] ?? '';
+    $main_template = 'lot.php';
+    $main_data = compact('lot', 'categories');
 }
 
-$page_title = $lot ? $lot['title'] : '404 Страница не найдена';
-$main_template = $lot ? 'lot.php' : '404.php';
-$main_data = $lot ? compact('lot') : [];
+// Process bet form
+if ($lot && is_bet_form_available($lot, get_user_id())) {
+    $form_data = [];
+    $form_errors = [];
 
-$main_content = include_template($main_template, array_merge(['categories' => $categories], $main_data));
+    if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
+        $form_data = $_POST;
+
+        $form_errors = validate_form_data(
+            VALIDATION_RULES[CREATE_BET_FORM_KEY],
+            $form_data,
+            $form_errors,
+            ['db' => $db_connection]
+        );
+
+        if (empty($form_errors)) {
+            if ($form_data['amount'] < $lot['min_bet']) {
+                $form_errors['amount'] = 'Сумма ставки меньше минимальной';
+            } else {
+                $data = build_create_bet_form_data($form_data, $user, $lot);
+
+                if (create_bet($db_connection, $data)) {
+                    redirect_to('/lot.php?id=' . $lot_id);
+                }
+            }
+
+            // TODO: Add proper error handling if bet creation fails.
+        }
+    }
+
+    $main_data = array_merge($main_data, [
+        'form_name'   => CREATE_BET_FORM_KEY,
+        'form_data'   => $form_data,
+        'form_errors' => $form_errors,
+    ]);
+}
+
+$main_content = include_template($main_template, $main_data);
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => $page_title,
-    'is_auth'        => $is_auth,
     'user'           => $user,
     'categories'     => $categories,
     'main_content'   => $main_content,

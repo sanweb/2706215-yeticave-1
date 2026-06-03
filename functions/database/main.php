@@ -91,7 +91,14 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             lots.`bet_step`,
             IFNULL(MAX(bets.`amount`), lots.`start_price`) + lots.`bet_step` AS `min_bet`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
-            categories.`name` AS `category_name`
+            categories.`name` AS `category_name`,
+            (
+                SELECT `user_id`
+                FROM bets b1
+                WHERE b1.`lot_id` = lots.`id`
+                ORDER BY b1.`amount`
+                DESC LIMIT 1
+            ) as max_bet_user_id
         FROM `lots`
             JOIN `categories` ON lots.`category_id` = categories.`id`
             LEFT JOIN `bets` ON bets.`lot_id` = lots.`id`
@@ -129,6 +136,31 @@ function create_lot(mysqli $connection, array $data): int
 
     if (mysqli_stmt_affected_rows($stmt) !== 1) {
         exit('Ошибка добавления лота');
+    }
+
+    return mysqli_insert_id($connection);
+}
+
+/**
+ * @param mysqli $connection
+ * @param array $data
+ *
+ * @return int
+ */
+function create_bet(mysqli $connection, array $data): int
+{
+    $sql = <<<SQL
+        INSERT INTO `bets` (
+            `user_id`,
+            `lot_id`,
+            `amount`
+        ) VALUES (?, ?, ?)
+    SQL;
+
+    $stmt = execute_stmt($connection, $sql, 'iii', $data);
+
+    if (mysqli_stmt_affected_rows($stmt) !== 1) {
+        exit('Ошибка добавления ставки');
     }
 
     return mysqli_insert_id($connection);

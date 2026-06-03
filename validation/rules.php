@@ -26,4 +26,7 @@ const VALIDATION_RULES = [
         'email'        => ['required', 'email'],
         'password'     => ['required', 'string:max=128'],
     ],
+    CREATE_BET_FORM_KEY => [
+        'amount' => ['required', 'int'],
+    ],
 ];

@@ -54,6 +54,15 @@ function build_create_lot_form_data(array $form_data, array $user): array
     ];
 }
 
+function build_create_bet_form_data(array $form_data, array $user, array $lot): array
+{
+    return [
+        (int) ($user['id'] ?? 0),
+        (int) ($lot['id'] ?? 0),
+        (int) $form_data['amount'],
+    ];
+}
+
 function build_create_user_form_data(array $form_data): array
 {
     $password_hash = password_hash($form_data['password'], PASSWORD_DEFAULT);
@@ -77,4 +86,14 @@ function build_create_user_form_data(array $form_data): array
 function build_form_field_id(string $form_name, string $field_name): string
 {
     return $form_name . '-' . $field_name;
+}
+
+function is_bet_form_available(array $lot, ?int $user_id): bool
+{
+    $lot_author_id = isset($lot['author_id']) ? (int) $lot['author_id'] : null;
+    $max_bet_user_id = isset($lot['max_bet_user_id']) ? (int) $lot['max_bet_user_id'] : null;
+
+    return !is_null($user_id)
+        && $lot_author_id !== $user_id
+        && $max_bet_user_id !== $user_id;
 }

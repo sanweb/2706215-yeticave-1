@@ -3,32 +3,31 @@
 declare(strict_types=1);
 
 const SESSION_USER_KEY = 'user';
-const SESSION_USER_ID_KEY = 'id';
 const SESSION_USER_DATA_FIELDS = ['id', 'email', 'name', 'updated_at'];
 
 function authenticate_user(array $user, string $password): bool
 {
-    $is_authorized = false;
+    $is_authenticated = false;
 
     if (
-        !empty($user) &&
-        !empty($user['password_hash']) &&
-        password_verify($password, $user['password_hash'])
+        !empty($user)
+        && !empty($user['password_hash'])
+        && password_verify($password, $user['password_hash'])
     ) {
         //session is already active (started from init.php)
         //session_start();
 
         $session_user_data = build_session_user_data($user);
         $_SESSION[SESSION_USER_KEY] = $session_user_data;
-        $is_authorized = true;
+        $is_authenticated = true;
     }
 
-    return $is_authorized;
+    return $is_authenticated;
 }
 
 function is_auth(): bool
 {
-    return isset($_SESSION[SESSION_USER_KEY]);
+    return !is_null(get_auth_user());
 }
 
 function get_auth_user(): ?array
@@ -38,8 +37,8 @@ function get_auth_user(): ?array
 
 function get_user_id(): ?int
 {
-    return isset($_SESSION[SESSION_USER_KEY][SESSION_USER_ID_KEY])
-        ? (int) $_SESSION[SESSION_USER_KEY][SESSION_USER_ID_KEY]
+    return isset($_SESSION[SESSION_USER_KEY]['id'])
+        ? (int) $_SESSION[SESSION_USER_KEY]['id']
         : null;
 }
 
