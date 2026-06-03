@@ -91,7 +91,14 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             lots.`bet_step`,
             IFNULL(MAX(bets.`amount`), lots.`start_price`) + lots.`bet_step` AS `min_bet`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
-            categories.`name` AS `category_name`
+            categories.`name` AS `category_name`,
+            (
+                SELECT `user_id`
+                FROM bets b1
+                WHERE b1.`lot_id` = lots.`id`
+                ORDER BY b1.`amount`
+                DESC LIMIT 1
+            ) as max_bet_user_id
         FROM `lots`
             JOIN `categories` ON lots.`category_id` = categories.`id`
             LEFT JOIN `bets` ON bets.`lot_id` = lots.`id`

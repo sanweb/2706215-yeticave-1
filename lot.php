@@ -13,46 +13,53 @@ $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
     http_response_code(HttpCodeEnum::NOT_FOUND->value);
+    $page_title = '404 Страница не найдена';
+    $main_template = '404.php';
+    $main_data = compact('categories');
+} else {
+    $page_title = $lot['title'] ?? '';
+    $main_template = 'lot.php';
+    $main_data = compact('lot', 'categories');
 }
 
-$form_data = [];
-$form_errors = [];
+// Process bet form
+if ($lot && is_bet_form_available($lot, get_user_id())) {
+    $form_data = [];
+    $form_errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
-    $form_data = $_POST;
+    if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
+        $form_data = $_POST;
 
-    $form_errors = validate_form_data(
-        VALIDATION_RULES[CREATE_BET_FORM_KEY],
-        $form_data,
-        $form_errors,
-        ['db' => $db_connection]
-    );
+        $form_errors = validate_form_data(
+            VALIDATION_RULES[CREATE_BET_FORM_KEY],
+            $form_data,
+            $form_errors,
+            ['db' => $db_connection]
+        );
 
-    if (empty($form_errors)) {
-        if ($form_data['amount'] < $lot['min_bet']) {
-            $form_errors['amount'] = 'Сумма ставки меньше минимальной';
-        } else {
-            $data = build_create_bet_form_data($form_data, $user, $lot);
+        if (empty($form_errors)) {
+            if ($form_data['amount'] < $lot['min_bet']) {
+                $form_errors['amount'] = 'Сумма ставки меньше минимальной';
+            } else {
+                $data = build_create_bet_form_data($form_data, $user, $lot);
 
-            if (create_bet($db_connection, $data)) {
-                redirect_to('/lot.php?id=' . $lot_id);
+                if (create_bet($db_connection, $data)) {
+                    redirect_to('/lot.php?id=' . $lot_id);
+                }
             }
-        }
 
-        // TODO: Add proper error handling if bet creation fails.
+            // TODO: Add proper error handling if bet creation fails.
+        }
     }
+
+    $main_data = array_merge($main_data, [
+        'form_name'   => CREATE_BET_FORM_KEY,
+        'form_data'   => $form_data,
+        'form_errors' => $form_errors,
+    ]);
 }
 
-$page_title = $lot ? $lot['title'] : '404 Страница не найдена';
-$main_template = $lot ? 'lot.php' : '404.php';
-$main_data = $lot ? [
-    'lot' => $lot,
-    'form_name'   => CREATE_BET_FORM_KEY,
-    'form_data'   => $form_data,
-    'form_errors' => $form_errors,
-] : [];
-
-$main_content = include_template($main_template, array_merge(['categories' => $categories], $main_data));
+$main_content = include_template($main_template, $main_data);
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => $page_title,

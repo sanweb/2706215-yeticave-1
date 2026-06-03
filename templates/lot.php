@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <?php if (is_auth() && ($lot['author_id'] ?? 0) !== get_user_id()): ?>
+                <?php if (isset($form_name, $form_data, $form_errors)): ?>
                     <form class="lot-item__form<?= !empty($form_errors) ? ' form--invalid' : '' ?>" action="" method="post" autocomplete="off">
                         <?php $field_name = 'amount'; ?>
                         <?php $field_id = build_form_field_id($form_name, $field_name); ?>
