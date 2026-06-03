@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+const MAX_UPLOADED_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const ALLOWED_IMAGE_TYPES = [
+    'jpg'  => 'image/jpeg',
+    'jpeg' => 'image/jpeg',
+    'png'  => 'image/png',
+];
+
 /**
  * Saves an uploaded image file and returns its public URL.
  *

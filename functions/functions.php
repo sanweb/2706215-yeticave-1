@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+// DateTime
+const SECONDS_PER_MINUTE = 60;
+const SECONDS_PER_HOUR   = SECONDS_PER_MINUTE * 60;
+
+// Assets
+const ASSET_TYPE_CSS = 'css';
+const ASSET_TYPE_JS  = 'js';
+
 /**
  * Formats a price and adds the ruble sign.
  *
