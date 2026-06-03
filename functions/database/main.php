@@ -140,6 +140,31 @@ function create_lot(mysqli $connection, array $data): int
  *
  * @return int
  */
+function create_bet(mysqli $connection, array $data): int
+{
+    $sql = <<<SQL
+        INSERT INTO `bets` (
+            `user_id`,
+            `lot_id`,
+            `amount`
+        ) VALUES (?, ?, ?)
+    SQL;
+
+    $stmt = execute_stmt($connection, $sql, 'iii', $data);
+
+    if (mysqli_stmt_affected_rows($stmt) !== 1) {
+        exit('Ошибка добавления ставки');
+    }
+
+    return mysqli_insert_id($connection);
+}
+
+/**
+ * @param mysqli $connection
+ * @param array $data
+ *
+ * @return int
+ */
 function create_user(mysqli $connection, array $data): int
 {
     $sql = <<<SQL

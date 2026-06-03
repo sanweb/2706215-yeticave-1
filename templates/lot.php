@@ -41,9 +41,26 @@
                         Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0) ?></span>
                     </div>
                 </div>
+
                 <?php if (is_auth() && ($lot['author_id'] ?? 0) !== get_user_id()): ?>
-                    <!-- Bet form (not required yet) -->
+                    <form class="lot-item__form<?= !empty($form_errors) ? ' form--invalid' : '' ?>" action="" method="post" autocomplete="off">
+                        <?php $field_name = 'amount'; ?>
+                        <?php $field_id = build_form_field_id($form_name, $field_name); ?>
+                        <p class="lot-item__form-item form__item<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">
+                            <label for="<?= $field_id ?>">Ваша ставка</label>
+                            <input
+                                id="<?= $field_id ?>"
+                                type="text"
+                                name="<?= $field_name ?>"
+                                value="<?= esc($form_data[$field_name] ?? '') ?>"
+                                placeholder="<?= esc($lot['min_bet'] ?? '') ?>"
+                            >
+                            <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
+                        </p>
+                        <button type="submit" class="button">Сделать ставку</button>
+                    </form>
                 <?php endif; ?>
+
             </div>
             <!-- Bet history (not required yet) -->
         </div>

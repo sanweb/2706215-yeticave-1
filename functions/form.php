@@ -54,6 +54,15 @@ function build_create_lot_form_data(array $form_data, array $user): array
     ];
 }
 
+function build_create_bet_form_data(array $form_data, array $user, array $lot): array
+{
+    return [
+        (int) ($user['id'] ?? 0),
+        (int) ($lot['id'] ?? 0),
+        (int) $form_data['amount'],
+    ];
+}
+
 function build_create_user_form_data(array $form_data): array
 {
     $password_hash = password_hash($form_data['password'], PASSWORD_DEFAULT);
