@@ -1,6 +1,7 @@
 <?php
 
 /** @var array  $user */
+/** @var string $search_phrase */
 
 ?>
 <header class="main-header">
@@ -9,10 +10,10 @@
         <a class="main-header__logo" <?= !is_home_page() ? 'href="/"' : '' ?>>
             <img src="/assets/img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
-        <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
+        <form class="main-header__search" method="get" action="/search.php" autocomplete="off">
             <!--suppress HtmlFormInputWithoutLabel -->
-            <input type="search" name="search" placeholder="Поиск лота">
-            <input class="main-header__search-btn" type="submit" name="find" value="Найти">
+            <input type="search" name="search" value="<?= $search_phrase ?> "placeholder="Поиск лота">
+            <input class="main-header__search-btn" type="submit" value="Найти">
         </form>
         <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
 

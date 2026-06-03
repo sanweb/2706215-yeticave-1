@@ -16,6 +16,7 @@ require_once BASE_PATH . '/validation/index.php';
 require_once BASE_PATH . '/functions/upload.php';
 require_once BASE_PATH . '/functions/form.php';
 require_once BASE_PATH . '/functions/auth.php';
+require_once BASE_PATH . '/functions/pagination.php';
 
 $db_config = require BASE_PATH . '/config/db.php';
 

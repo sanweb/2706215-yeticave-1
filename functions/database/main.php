@@ -217,3 +217,35 @@ function get_user_by_email(mysqli $connection, string $email): ?array
 
     return mysqli_fetch_assoc($result);
 }
+
+function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $page = 1, int $lots_per_page = LOTS_PER_PAGE): ?array
+{
+    $page = (int) max(1, $page);
+    $lots_per_page = (int) max(1, $lots_per_page);
+    $offset = (int) ($page - 1) * $lots_per_page;
+
+    $sql = <<<SQL
+        SELECT
+            lots.`id`,
+            lots.`title`,
+            lots.`start_price`,
+            lots.`image_url`,
+            IFNULL(lot_bets.`max_amount`, lots.`start_price`) AS `price`,
+            DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
+            categories.`name` AS `category_name`
+        FROM `lots`
+            JOIN `categories` ON lots.`category_id` = categories.`id`
+            LEFT JOIN (
+                SELECT `lot_id`, MAX(`amount`) AS `max_amount`
+                FROM `bets`
+                GROUP BY `lot_id`
+            ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
+        WHERE MATCH(`title`, `description`) AGAINST (?)
+        LIMIT ?
+        OFFSET ?
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'sii', [$search_phrase, $lots_per_page, $offset]);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}

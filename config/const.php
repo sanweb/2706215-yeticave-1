@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 // Lots
 const LIMIT_RECENT_LOTS = 6;
+const LOTS_PER_PAGE = 6;
 
 // Uploads
 const UPLOADS_URL = '/uploads';

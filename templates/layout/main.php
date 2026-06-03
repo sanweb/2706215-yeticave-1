@@ -30,6 +30,7 @@ $js_files = $js_files ?? [];
 
         <?= include_template('layout/_header.php', [
             'user' => $user,
+            'search_phrase' => $search_phrase ?? '',
         ]) ?>
 
         <main class="<?= $main_classname ?>">
