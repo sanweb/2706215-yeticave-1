@@ -10,8 +10,7 @@ require_once __DIR__ . '/init.php';
 /** @var array  $categories */
 
 if (is_auth()) {
-    http_response_code(HttpCodeEnum::FORBIDDEN->value);
-    exit;
+    redirect_to('/');
 }
 
 $form_data = [];
