@@ -10,9 +10,9 @@ function authenticate_user(array $user, string $password): bool
     $is_authenticated = false;
 
     if (
-        !empty($user) &&
-        !empty($user['password_hash']) &&
-        password_verify($password, $user['password_hash'])
+        !empty($user)
+        && !empty($user['password_hash'])
+        && password_verify($password, $user['password_hash'])
     ) {
         //session is already active (started from init.php)
         //session_start();
