@@ -23,7 +23,6 @@ $db_connection = db_connect($db_config);
 
 session_start();
 
-$is_auth = is_auth();
-$user = $is_auth ? get_auth_user() : null;
+$user = get_auth_user();
 
 $categories = get_all_categories($db_connection);
