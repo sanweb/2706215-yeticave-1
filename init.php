@@ -6,7 +6,7 @@ date_default_timezone_set('Europe/Moscow');
 
 const BASE_PATH = __DIR__;
 
-require_once BASE_PATH . '/util/const.php';
+require_once BASE_PATH . '/config/const.php';
 require_once BASE_PATH . '/enum/HttpMethodEnum.php';
 require_once BASE_PATH . '/enum/HttpCodeEnum.php';
 require_once BASE_PATH . '/functions/helpers.php';
