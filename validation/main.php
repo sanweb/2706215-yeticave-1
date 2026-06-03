@@ -51,7 +51,7 @@ function parse_validator(string $validator_string): array
     $validator_func = null;
     $params = [];
 
-    if (strpos($validator_string, VALIDATOR_SEPARATOR) === false) {
+    if (!str_contains($validator_string, VALIDATOR_SEPARATOR)) {
         $validator_alias = $validator_string;
     } else {
         [$validator_alias, $params_string] = explode(VALIDATOR_SEPARATOR, $validator_string, 2);
