@@ -1,7 +1,11 @@
 <?php
 
-/** @var array $categories */
-/** @var array $lot */
+/** @var array  $categories */
+/** @var array  $lot */
+/** @var bool   $is_bet_form_available */
+/** @var string $form_name */
+/** @var array  $form_data */
+/** @var array  $form_errors */
 
 ?>
 <nav class="nav">
@@ -42,7 +46,7 @@
                     </div>
                 </div>
 
-                <?php if (isset($form_name, $form_data, $form_errors)): ?>
+                <?php if ($is_bet_form_available): ?>
                     <form class="lot-item__form<?= !empty($form_errors) ? ' form--invalid' : '' ?>" action="" method="post" autocomplete="off">
                         <?php $field_name = 'amount'; ?>
                         <?php $field_id = build_form_field_id($form_name, $field_name); ?>

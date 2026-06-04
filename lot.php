@@ -23,33 +23,34 @@ if ($lot === null) {
 }
 
 // Process bet form
-if ($lot && is_bet_form_available($lot, get_user_id())) {
-    $form_data = [];
+$is_bet_form_available = $lot && is_bet_form_available($lot, get_user_id());
+
+if ($is_bet_form_available && is_post_request()) {
+    $form_data = $_POST;
     $form_errors = [];
 
-    if (is_post_request()) {
-        $form_data = $_POST;
+    $form_errors = validate_form_data(
+        VALIDATION_RULES[CREATE_BET_FORM_KEY],
+        $form_data,
+        $form_errors,
+        ['db' => $db_connection]
+    );
 
-        $form_errors = validate_form_data(
-            VALIDATION_RULES[CREATE_BET_FORM_KEY],
-            $form_data,
-            $form_errors,
-            ['db' => $db_connection]
-        );
 
-        if (empty($form_errors)) {
-            if ($form_data['amount'] < $lot['min_bet']) {
-                $form_errors['amount'] = 'Сумма ставки меньше минимальной';
-            } else {
-                $data = build_create_bet_form_data($form_data, $user, $lot);
-
-                if (create_bet($db_connection, $data)) {
-                    redirect_to('/lot.php?id=' . $lot_id);
-                }
-            }
-
-            // TODO: Add proper error handling if bet creation fails.
+    if (empty($form_errors)) {
+        if ($form_data['amount'] < $lot['min_bet']) {
+            $form_errors['amount'] = 'Сумма ставки меньше минимальной';
         }
+    }
+
+    if (empty($form_errors)) {
+        $data = build_create_bet_form_data($form_data, $user, $lot);
+
+        if (create_bet($db_connection, $data)) {
+            redirect_to('/lot.php?id=' . $lot_id);
+        }
+
+        // TODO: Add proper error handling if bet creation fails.
     }
 
     $main_data = array_merge($main_data, [
@@ -58,6 +59,8 @@ if ($lot && is_bet_form_available($lot, get_user_id())) {
         'form_errors' => $form_errors,
     ]);
 }
+
+$main_data['is_bet_form_available'] = $is_bet_form_available;
 
 $main_content = include_template($main_template, $main_data);
 
