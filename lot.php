@@ -36,7 +36,6 @@ if ($is_bet_form_available && is_post_request()) {
         ['db' => $db_connection]
     );
 
-
     if (empty($form_errors)) {
         if ($form_data['amount'] < $lot['min_bet']) {
             $form_errors['amount'] = 'Сумма ставки меньше минимальной';
@@ -52,11 +51,13 @@ if ($is_bet_form_available && is_post_request()) {
 
         // TODO: Add proper error handling if bet creation fails.
     }
+}
 
+if ($is_bet_form_available) {
     $main_data = array_merge($main_data, [
         'form_name'   => CREATE_BET_FORM_KEY,
-        'form_data'   => $form_data,
-        'form_errors' => $form_errors,
+        'form_data'   => $form_data ?? [],
+        'form_errors' => $form_errors ?? [],
     ]);
 }
 
