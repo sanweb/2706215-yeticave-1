@@ -109,7 +109,7 @@ function include_asset_files(string $type, array $files = []): string
  */
 function is_home_page(): bool
 {
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = parse_url(get_request_uri(), PHP_URL_PATH);
 
     return in_array($path, ['/', '/index.php'], true);
 }

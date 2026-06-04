@@ -8,7 +8,7 @@ require_once __DIR__ . '/init.php';
 /** @var array  $user */
 /** @var array  $categories */
 
-$lot_id = (int) ($_GET['id'] ?? 0);
+$lot_id = (int) get_query_param('id', 0);
 $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
@@ -27,7 +27,7 @@ if ($lot && is_bet_form_available($lot, get_user_id())) {
     $form_data = [];
     $form_errors = [];
 
-    if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
+    if (is_post_request()) {
         $form_data = $_POST;
 
         $form_errors = validate_form_data(

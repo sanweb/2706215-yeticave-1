@@ -10,6 +10,7 @@ require_once BASE_PATH . '/config/const.php';
 require_once BASE_PATH . '/enum/HttpMethodEnum.php';
 require_once BASE_PATH . '/enum/HttpCodeEnum.php';
 require_once BASE_PATH . '/functions/helpers.php';
+require_once BASE_PATH . '/functions/request.php';
 require_once BASE_PATH . '/functions/common.php';
 require_once BASE_PATH . '/functions/database/index.php';
 require_once BASE_PATH . '/validation/index.php';

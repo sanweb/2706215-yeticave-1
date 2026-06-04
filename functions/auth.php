@@ -27,7 +27,7 @@ function authenticate_user(array $user, string $password): bool
 
 function is_auth(): bool
 {
-    return !is_null(get_auth_user());
+    return get_auth_user() !== null;
 }
 
 function get_auth_user(): ?array

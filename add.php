@@ -16,7 +16,7 @@ if (!is_auth()) {
 $form_data = [];
 $form_errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
+if (is_post_request()) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
