@@ -218,7 +218,36 @@ function get_user_by_email(mysqli $connection, string $email): ?array
     return mysqli_fetch_assoc($result);
 }
 
-function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $page = 1, int $lots_per_page = LOTS_PER_PAGE): ?array
+/**
+ * Returns the total number of lots matching the search phrase.
+ *
+ * @param mysqli $connection
+ * @param string $search_phrase
+ * @return int Total number of matching lots.
+ */
+function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): int
+{
+    $sql = <<<SQL
+        SELECT COUNT(*) AS `total`
+        FROM `lots`
+        WHERE MATCH(`title`, `description`) AGAINST (?)
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 's', [$search_phrase]);
+
+    return mysqli_fetch_column($result);
+}
+
+/**
+ * Returns lots matching the search phrase for the specified page.
+ *
+ * @param mysqli $connection
+ * @param string $search_phrase
+ * @param int $lots_per_page
+ * @param int $page
+ * @return array<int, array<string, mixed>> Matching lots list.
+ */
+function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots_per_page, int $page = 1): array
 {
     $page = (int) max(1, $page);
     $lots_per_page = (int) max(1, $lots_per_page);

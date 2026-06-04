@@ -8,22 +8,27 @@ require_once __DIR__ . '/init.php';
 /** @var array  $user */
 /** @var array  $categories */
 
-$search_phrase = (string) ($_GET['search'] ? trim($_GET['search']) : '');
-$current_page = (int) ($_GET['page'] ?? 1);
+$search_phrase = normalize_search_phrase(get_query_param('search', ''));
+$current_page = normalize_positive_int(get_query_param('page', 1));
 
-$search_results = $search_phrase !== '' ? get_lots_by_phrase($db_connection, $search_phrase) : null;
+$total_lots = $search_phrase !== ''
+    ? get_total_lots_by_phrase($db_connection, $search_phrase)
+    : 0;
 
-$pagination = !empty($search_results) ? build_pagination(
-    '/search.php',
-    ['search' => $search_phrase],
-    $search_results ? count($search_results) : 0,
-    $current_page
-) : [];
+$search_results = $total_lots > 0
+    ? get_lots_by_phrase($db_connection, $search_phrase, LOTS_PER_PAGE, $current_page)
+    : [];
 
-$page_title = 'Результаты поиска';
-$main_template = 'search.php';
+$pagination = $total_lots > LOTS_PER_PAGE
+    ? build_pagination(
+        '/search.php',
+        ['search' => $search_phrase],
+        $total_lots,
+        LOTS_PER_PAGE,
+        $current_page
+    ) : [];
 
-$main_content = include_template($main_template, compact(
+$main_content = include_template('search.php', compact(
     'categories',
     'search_phrase',
     'search_results',
@@ -32,7 +37,7 @@ $main_content = include_template($main_template, compact(
 ));
 
 $page_content = include_template('layout/main.php', [
-    'page_title'     => $page_title,
+    'page_title'     => 'Результаты поиска',
     'user'           => $user,
     'categories'     => $categories,
     'main_content'   => $main_content,

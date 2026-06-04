@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+const SEARCH_PHRASE_MAX_LENGTH = 255;
+
 /**
  * Processes uploaded lot image file and updates form data or validation errors.
  *
@@ -96,4 +98,53 @@ function is_bet_form_available(array $lot, ?int $user_id): bool
     return !is_null($user_id)
         && $lot_author_id !== $user_id
         && $max_bet_user_id !== $user_id;
+}
+
+/**
+ * Normalizes a search phrase.
+ *
+ * @param mixed $value
+ *
+ * @return string
+ */
+function normalize_search_phrase(mixed $value): string
+{
+    if (is_string($value)) {
+        $value = trim($value);
+
+        if (mb_strlen($value) > SEARCH_PHRASE_MAX_LENGTH) {
+            $value = mb_substr($value, 0, SEARCH_PHRASE_MAX_LENGTH);
+        }
+    } else {
+        $value = '';
+    }
+
+    return $value;
+}
+
+/**
+ * Normalizes a value to a positive integer.
+ *
+ * @param mixed $value
+ * @param int $default
+ *
+ * @return int Positive integer, or default value.
+ */
+function normalize_positive_int(mixed $value, int $default = 1): int
+{
+    $result = $default;
+
+    if (is_int($value) || is_string($value)) {
+        $filtered_value = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => [
+                'min_range' => 1,
+            ],
+        ]);
+
+        if ($filtered_value !== false) {
+            $result = $filtered_value;
+        }
+    }
+
+    return $result;
 }
