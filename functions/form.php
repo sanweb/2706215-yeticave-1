@@ -95,7 +95,7 @@ function is_bet_form_available(array $lot, ?int $user_id): bool
     $lot_author_id = isset($lot['author_id']) ? (int) $lot['author_id'] : null;
     $max_bet_user_id = isset($lot['max_bet_user_id']) ? (int) $lot['max_bet_user_id'] : null;
 
-    return !is_null($user_id)
+    return $user_id !== null
         && $lot_author_id !== $user_id
         && $max_bet_user_id !== $user_id;
 }
