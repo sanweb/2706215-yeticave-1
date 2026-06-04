@@ -56,6 +56,15 @@ function build_create_lot_form_data(array $form_data, array $user): array
     ];
 }
 
+/**
+ * Builds ordered bet data for inserting a new bet into the database.
+ *
+ * @param array<string, mixed> $form_data Validated bet form data.
+ * @param array<string, mixed> $user Current authenticated user data.
+ * @param array<string, mixed> $lot Current lot data.
+ *
+ * @return array<int, mixed> Ordered values for prepared statement binding.
+ */
 function build_create_bet_form_data(array $form_data, array $user, array $lot): array
 {
     return [
@@ -65,6 +74,13 @@ function build_create_bet_form_data(array $form_data, array $user, array $lot): 
     ];
 }
 
+/**
+ * Builds ordered user data for inserting a new user into the database.
+ *
+ * @param array<string, mixed> $form_data Validated registration form data.
+ *
+ * @return array<int, mixed> Ordered values for prepared statement binding.
+ */
 function build_create_user_form_data(array $form_data): array
 {
     $password_hash = password_hash($form_data['password'], PASSWORD_DEFAULT);
@@ -90,6 +106,17 @@ function build_form_field_id(string $form_name, string $field_name): string
     return $form_name . '-' . $field_name;
 }
 
+/**
+ * Checks whether the bet form is available for the current user.
+ *
+ * The bet form is unavailable for guests, the lot author,
+ * and the user who has already placed the current highest bet.
+ *
+ * @param array<string, mixed> $lot Lot data.
+ * @param int|null $user_id Current user ID, or null for guest.
+ *
+ * @return bool True if the user can place a bet, false otherwise.
+ */
 function is_bet_form_available(array $lot, ?int $user_id): bool
 {
     $lot_author_id = isset($lot['author_id']) ? (int) $lot['author_id'] : null;
