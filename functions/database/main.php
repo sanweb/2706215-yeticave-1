@@ -91,7 +91,15 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             lots.`bet_step`,
             IFNULL(MAX(bets.`amount`), lots.`start_price`) + lots.`bet_step` AS `min_bet`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
-            categories.`name` AS `category_name`
+            lots.`author_id`,
+            categories.`name` AS `category_name`,
+            (
+                SELECT `user_id`
+                FROM bets b1
+                WHERE b1.`lot_id` = lots.`id`
+                ORDER BY b1.`amount`
+                DESC LIMIT 1
+            ) AS max_bet_user_id
         FROM `lots`
             JOIN `categories` ON lots.`category_id` = categories.`id`
             LEFT JOIN `bets` ON bets.`lot_id` = lots.`id`
@@ -129,6 +137,31 @@ function create_lot(mysqli $connection, array $data): int
 
     if (mysqli_stmt_affected_rows($stmt) !== 1) {
         exit('Ошибка добавления лота');
+    }
+
+    return mysqli_insert_id($connection);
+}
+
+/**
+ * @param mysqli $connection
+ * @param array $data
+ *
+ * @return int
+ */
+function create_bet(mysqli $connection, array $data): int
+{
+    $sql = <<<SQL
+        INSERT INTO `bets` (
+            `user_id`,
+            `lot_id`,
+            `amount`
+        ) VALUES (?, ?, ?)
+    SQL;
+
+    $stmt = execute_stmt($connection, $sql, 'iii', $data);
+
+    if (mysqli_stmt_affected_rows($stmt) !== 1) {
+        exit('Ошибка добавления ставки');
     }
 
     return mysqli_insert_id($connection);
@@ -184,4 +217,65 @@ function get_user_by_email(mysqli $connection, string $email): ?array
     $result = get_stmt_result($connection, $sql, 's', [$email]);
 
     return mysqli_fetch_assoc($result);
+}
+
+/**
+ * Returns the total number of lots matching the search phrase.
+ *
+ * @param mysqli $connection
+ * @param string $search_phrase
+ * @return int Total number of matching lots.
+ */
+function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): int
+{
+    $sql = <<<SQL
+        SELECT COUNT(*) AS `total`
+        FROM `lots`
+        WHERE MATCH(`title`, `description`) AGAINST (?)
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 's', [$search_phrase]);
+
+    return mysqli_fetch_column($result);
+}
+
+/**
+ * Returns lots matching the search phrase for the specified page.
+ *
+ * @param mysqli $connection
+ * @param string $search_phrase
+ * @param int $lots_per_page
+ * @param int $page
+ * @return array<int, array<string, mixed>> Matching lots list.
+ */
+function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots_per_page, int $page = 1): array
+{
+    $page = (int) max(1, $page);
+    $lots_per_page = (int) max(1, $lots_per_page);
+    $offset = (int) ($page - 1) * $lots_per_page;
+
+    $sql = <<<SQL
+        SELECT
+            lots.`id`,
+            lots.`title`,
+            lots.`start_price`,
+            lots.`image_url`,
+            IFNULL(lot_bets.`max_amount`, lots.`start_price`) AS `price`,
+            DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
+            categories.`name` AS `category_name`
+        FROM `lots`
+            JOIN `categories` ON lots.`category_id` = categories.`id`
+            LEFT JOIN (
+                SELECT `lot_id`, MAX(`amount`) AS `max_amount`
+                FROM `bets`
+                GROUP BY `lot_id`
+            ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
+        WHERE MATCH(`title`, `description`) AGAINST (?)
+        LIMIT ?
+        OFFSET ?
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'sii', [$search_phrase, $lots_per_page, $offset]);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

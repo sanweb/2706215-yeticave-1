@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+const VALIDATOR_SEPARATOR = ':';
+const VALIDATOR_PARAMS_SEPARATOR = '&';
+const VALIDATOR_PARAM_VALUE_SEPARATOR = '=';
+
 /**
  * Validates required form fields and returns validation errors.
  *
@@ -47,7 +51,7 @@ function parse_validator(string $validator_string): array
     $validator_func = null;
     $params = [];
 
-    if (strpos($validator_string, VALIDATOR_SEPARATOR) === false) {
+    if (!str_contains($validator_string, VALIDATOR_SEPARATOR)) {
         $validator_alias = $validator_string;
     } else {
         [$validator_alias, $params_string] = explode(VALIDATOR_SEPARATOR, $validator_string, 2);

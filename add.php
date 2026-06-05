@@ -5,7 +5,6 @@ declare(strict_types=1);
 require_once __DIR__ . '/init.php';
 
 /** @var mysqli $db_connection */
-/** @var bool   $is_auth */
 /** @var array  $user */
 /** @var array  $categories */
 
@@ -17,7 +16,7 @@ if (!is_auth()) {
 $form_data = [];
 $form_errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === HttpMethodEnum::POST->value) {
+if (is_post_request()) {
     $form_data = $_POST;
 
     $form_errors = validate_form_data(
@@ -51,7 +50,6 @@ $main_content = include_template('add-lot.php', [
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => 'Добавление лота',
-    'is_auth'        => $is_auth,
     'user'           => $user,
     'categories'     => $categories,
     'main_content'   => $main_content,
