@@ -32,38 +32,42 @@
                                 height="40"
                                 alt="<?= esc($rate['title'] ?? '') ?>">
                         </div>
+
                         <h3 class="rates__title">
-                            <a href="lot.html">
+                            <a href="/lot.php?id=<?= (int) ($rate['lot_id'] ?? 0) ?>">
                                 <?= esc($rate['title'] ?? '') ?>
                             </a>
                         </h3>
+
                         <?php if (!empty($rate['is_win'])): ?>
                             <p><?= esc($rate['contact_info']) ?></p>
                         <?php endif; ?>
                     </td>
+
                     <td class="rates__category">
                         <?= esc($rate['category_name'] ?? '') ?>
                     </td>
-                    <?php $time_left = get_time_left($lot['expire_date'] ?? ''); ?>
-                    <div class="lot__timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
-                        <?= format_time_left($time_left) ?>
-                    </div>
+
                     <td class="rates__timer">
+
                         <?php if (!empty($rate['is_win'])): ?>
                             <div class="timer timer--win">Ставка выиграла</div>
-                        <?php elseif (!empty($rate['is_lot_expired'])): ?>
+                        <?php elseif (!empty($rate['is_expired'])): ?>
                             <div class="timer timer--end">Торги окончены</div>
                         <?php else: ?>
+                            <?php $time_left = get_time_left($rate['expire_date'] ?? ''); ?>
                             <div class="timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
                                 <?= format_time_left($time_left) ?>
                             </div>
                         <?php endif; ?>
                     </td>
+
                     <td class="rates__price">
-                        <?php echo format_price($rate['max_amount'] ?? 0); ?>
+                        <?php echo format_price($rate['bet_amount'] ?? 0); ?>
                     </td>
+
                     <td class="rates__time">
-                        5 минут назад
+                        <?= format_time_since_bet($rate['bet_created_at']) ?>
                     </td>
                 </tr>
 

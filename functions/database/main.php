@@ -289,13 +289,13 @@ function get_lots_by_user_id(mysqli $connection, int $user_id): array
             lots.`title`,
             lots.`image_url`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
-            IF(lots.`expire_date` > CURRENT_DATE, 1, 0) AS `is_expired`,
+            IF(lots.`expire_date` <= CURRENT_DATE, 1, 0) AS `is_expired`,
             IF(lots.`winner_bet_id` IS NOT NULL AND lots.`winner_bet_id` = user_bets.`max_bet_id`, 1, 0) AS `is_win`,
             categories.`name` AS `category_name`,
             -- author contact info if winner_id = user_id
             lot_authors.`contact_info`,
-            user_bets.`max_amount`,
-            user_bets.`max_created_at` AS `max_bet_created_at`
+            user_bets.`max_amount` AS `bet_amount`,
+            DATE_FORMAT(user_bets.`max_created_at`, '%Y-%m-%d %H:%m:%s') AS `bet_created_at`
         FROM
             (
                 SELECT `lot_id`, MAX(`id`) AS `max_bet_id`, MAX(`amount`) AS `max_amount`, MAX(`created_at`) AS `max_created_at`
