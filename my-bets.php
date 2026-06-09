@@ -12,8 +12,11 @@ if (!is_auth()) {
     redirect_to('/login.php');
 }
 
+$user_bets = get_lots_by_user_id($db_connection, get_user_id());
+
 $main_content = include_template('my-bets.php', [
-    'categories'  => $categories,
+    'categories' => $categories,
+    'user_bets'  => $user_bets,
 ]);
 
 $page_content = include_template('layout/main.php', [
