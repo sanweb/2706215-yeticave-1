@@ -31,6 +31,7 @@ if (is_post_request()) {
         $user_id = create_user($db_connection, $data);
 
         if ($user_id) {
+            // Redirect registered user
             redirect_to('/login.php');
         }
 
