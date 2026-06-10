@@ -279,3 +279,36 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots
 
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+function get_lots_by_user_id(mysqli $connection, int $user_id): array
+{
+
+    $sql = <<<SQL
+        SELECT
+            lots.`id` AS `lot_id`,
+            lots.`title`,
+            lots.`image_url`,
+            DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
+            IF(lots.`expire_date` <= CURRENT_DATE, 1, 0) AS `is_expired`,
+            IF(lots.`winner_bet_id` IS NOT NULL AND lots.`winner_bet_id` = user_bets.`max_bet_id`, 1, 0) AS `is_win`,
+            categories.`name` AS `category_name`,
+            -- author contact info if winner_id = user_id
+            lot_authors.`contact_info`,
+            user_bets.`max_amount` AS `bet_amount`,
+            DATE_FORMAT(user_bets.`max_created_at`, '%Y-%m-%d %H:%m:%s') AS `bet_created_at`
+        FROM
+            (
+                SELECT `lot_id`, MAX(`id`) AS `max_bet_id`, MAX(`amount`) AS `max_amount`, MAX(`created_at`) AS `max_created_at`
+                FROM `bets`
+                WHERE `user_id` = ?
+                GROUP BY `lot_id`
+            ) AS user_bets
+            JOIN `lots` ON lots.`id` = user_bets.`lot_id`
+            JOIN `categories` ON lots.`category_id` = categories.`id`
+            JOIN `users` AS `lot_authors` ON lots.`author_id` = lot_authors.`id`
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'i', [$user_id]);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}

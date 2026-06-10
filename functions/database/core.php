@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+const MYSQL_TIME_ZONE = '+3:00';
+
 // TODO: Replace exit() calls with exceptions and show errors on the error.php page.
 
 /**
@@ -37,6 +39,10 @@ function db_connect(array $config): mysqli
 
     if (!mysqli_set_charset($connection, 'utf8mb4')) {
         exit('Ошибка установки кодировки: ' . mysqli_error($connection));
+    }
+
+    if (!mysqli_query($connection, "SET time_zone = '" . MYSQL_TIME_ZONE . "'")) {
+        exit('Ошибка установки часвого пояса MySQL: ' . mysqli_error($connection));
     }
 
     return $connection;
