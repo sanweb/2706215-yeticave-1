@@ -109,7 +109,9 @@ function format_time_since_bet(string $datetime): string
         $hours_elapsed = $elapsed_time['hours'] ?? 0;
         $minutes_elapsed = $elapsed_time['minutes'] ?? 0;
 
-        if ($hours_elapsed === 0 && $minutes_elapsed > 0) {
+        if ($hours_elapsed === 0 && $minutes_elapsed === 0) {
+            $time_since_bet = 'Меньше минуты назад';
+        } elseif ($hours_elapsed === 0 && $minutes_elapsed > 0) {
             $time_since_bet = $minutes_elapsed . ' '
                 . get_noun_plural_form(
                     $minutes_elapsed,
