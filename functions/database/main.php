@@ -280,7 +280,13 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function get_lots_by_user_id(mysqli $connection, int $user_id): array
+/**
+ * @param mysqli $connection
+ * @param int $user_id
+ *
+ * @return array
+ */
+function get_bets_by_user_id(mysqli $connection, int $user_id): array
 {
 
     $sql = <<<SQL
