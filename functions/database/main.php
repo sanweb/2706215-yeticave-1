@@ -282,6 +282,63 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots
 
 /**
  * @param mysqli $connection
+ * @param int $category_id
+ * @return int Total number of matching lots.
+ */
+function get_total_lots_by_category_id(mysqli $connection, int $category_id): int
+{
+    $sql = <<<SQL
+        SELECT COUNT(*) AS `total`
+        FROM `lots`
+        WHERE `category_id` = ? AND `expire_date` > CURRENT_DATE
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'i', [$category_id]);
+
+    return mysqli_fetch_column($result);
+}
+
+/**
+ * @param mysqli $connection
+ * @param int $category_id
+ * @param int $lots_per_page
+ * @param int $page
+ * @return array<int, array<string, mixed>> Matching lots list.
+ */
+function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots_per_page, int $page = 1): array
+{
+    $page = (int) max(1, $page);
+    $lots_per_page = (int) max(1, $lots_per_page);
+    $offset = (int) ($page - 1) * $lots_per_page;
+
+    $sql = <<<SQL
+        SELECT
+            lots.`id`,
+            lots.`title`,
+            lots.`start_price`,
+            lots.`image_url`,
+            IFNULL(lot_bets.`max_amount`, lots.`start_price`) AS `price`,
+            DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
+            categories.`name` AS `category_name`
+        FROM `lots`
+            JOIN `categories` ON lots.`category_id` = categories.`id`
+            LEFT JOIN (
+                SELECT `lot_id`, MAX(`amount`) AS `max_amount`
+                FROM `bets`
+                GROUP BY `lot_id`
+            ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
+        WHERE `category_id` = ? AND `expire_date` > CURRENT_DATE
+        LIMIT ?
+        OFFSET ?
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'iii', [$category_id, $lots_per_page, $offset]);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * @param mysqli $connection
  * @param int $user_id
  *
  * @return array
