@@ -115,11 +115,11 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             lots.`author_id`,
             categories.`name` AS `category_name`,
             (
-                SELECT `user_id`
-                FROM bets b1
+                SELECT b1.`user_id`
+                FROM bets AS b1
                 WHERE b1.`lot_id` = lots.`id`
-                ORDER BY b1.`amount`
-                DESC LIMIT 1
+                ORDER BY b1.`amount` DESC
+                LIMIT 1
             ) AS max_bet_user_id
         FROM `lots`
             JOIN `categories` ON lots.`category_id` = categories.`id`
@@ -438,7 +438,6 @@ function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots
  */
 function get_bets_by_user_id(mysqli $connection, int $user_id): array
 {
-
     $sql = <<<SQL
         SELECT
             lots.`id` AS `lot_id`,
@@ -460,7 +459,7 @@ function get_bets_by_user_id(mysqli $connection, int $user_id): array
                         FROM bets
                         WHERE `user_id` = ?
                         GROUP BY `lot_id`
-                    ) last_user_bets ON bets.`id` = last_user_bets.`id`
+                    ) AS last_user_bets ON bets.`id` = last_user_bets.`id`
             ) AS user_bets
             JOIN `lots` ON lots.`id` = user_bets.`lot_id`
             JOIN `categories` ON lots.`category_id` = categories.`id`
@@ -504,4 +503,81 @@ function get_bet_history_by_lot_id(mysqli $connection, int $lot_id): array
     $result = get_stmt_result($connection, $sql, 'i', [$lot_id]);
 
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * Returns winner candidates for expired lots without an assigned winner.
+ *
+ * Each candidate is based on the latest bet for the expired lot.
+ * According to the project rules, each new bet is greater than the previous one,
+ * so the latest bet is also the winning bet.
+ *
+ * @param mysqli $connection MySQL database connection.
+ *
+ * @return array<int, array{
+ *     id: string,
+ *     title: string,
+ *     bet_id: string,
+ *     user_id: string,
+ *     email: string,
+ *     name: string
+ * }>
+ */
+function get_expired_lots_winner_candidates(mysqli $connection): array
+{
+    $sql = <<<SQL
+        SELECT
+            lots.`id` AS `lot_id`,
+            lots.`title`,
+            bets.`id` AS `bet_id`,
+            bets.`user_id`,
+            users.`email`,
+            users.`name`
+        FROM `lots`
+            JOIN (
+                SELECT `lot_id`, MAX(`id`) AS `id`
+                FROM `bets`
+                GROUP BY `lot_id`
+            ) AS max_bets ON max_bets.`lot_id` = lots.`id`
+            JOIN `bets` ON bets.`id` = max_bets.`id`
+            JOIN `users` ON users.`id` = bets.`user_id`
+            WHERE lots.`expire_date` <= CURRENT_DATE
+                AND lots.`winner_bet_id` IS NULL
+    SQL;
+
+    $result = get_query_result($connection, $sql);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * Assigns the winning bet to a lot.
+ *
+ * The winner is assigned only if the lot does not already have a winner.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param array{
+ *     0: int,
+ *     1: int
+ * } $data Winner data: winning bet ID and lot ID.
+ *
+ * @return int Number of affected rows.
+ */
+function assign_lot_winner_bet_id(mysqli $connection, array $data): int
+{
+    $sql = <<<SQL
+        UPDATE `lots`
+        SET `winner_bet_id` = ?
+        WHERE `id` = ? AND `winner_bet_id` IS NULL
+    SQL;
+
+    $stmt = execute_stmt($connection, $sql, 'ii', $data);
+
+    $affected_rows = mysqli_stmt_affected_rows($stmt);
+
+    if ($affected_rows !== 1) {
+        exit('Ошибка назначения победителя лота');
+    }
+
+    return $affected_rows;
 }
