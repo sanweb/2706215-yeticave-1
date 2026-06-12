@@ -91,6 +91,7 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             lots.`bet_step`,
             IFNULL(MAX(bets.`amount`), lots.`start_price`) + lots.`bet_step` AS `min_bet`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
+            IF(lots.`expire_date` <= CURRENT_DATE, 1, 0) AS `is_expired`,
             lots.`author_id`,
             categories.`name` AS `category_name`,
             (
