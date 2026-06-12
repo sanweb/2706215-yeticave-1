@@ -525,16 +525,16 @@ function get_bet_history_by_lot_id(mysqli $connection, int $lot_id): array
  *     name: string
  * }>
  */
-function get_expired_lots_winner_candidates(mysqli $connection): array
+function get_lot_winner_candidates(mysqli $connection): array
 {
     $sql = <<<SQL
         SELECT
             lots.`id` AS `lot_id`,
-            lots.`title`,
+            lots.`title` AS `lot_title`,
             bets.`id` AS `bet_id`,
             bets.`user_id`,
-            users.`email`,
-            users.`name`
+            users.`email` AS `user_email`,
+            users.`name` AS `user_name`
         FROM `lots`
             JOIN (
                 SELECT `lot_id`, MAX(`id`) AS `id`
@@ -565,7 +565,7 @@ function get_expired_lots_winner_candidates(mysqli $connection): array
  *
  * @return int Number of affected rows.
  */
-function assign_lot_winner_bet_id(mysqli $connection, array $data): int
+function assign_lot_winner_bet_id(mysqli $connection, int $lot_id, int $bet_id): int
 {
     $sql = <<<SQL
         UPDATE `lots`
@@ -573,7 +573,9 @@ function assign_lot_winner_bet_id(mysqli $connection, array $data): int
         WHERE `id` = ? AND `winner_bet_id` IS NULL
     SQL;
 
-    $stmt = execute_stmt($connection, $sql, 'ii', $data);
+    $stmt = execute_stmt($connection, $sql, 'ii', [$bet_id, $lot_id]);
+
+    dd($stmt, $connection);
 
     $affected_rows = mysqli_stmt_affected_rows($stmt);
 
