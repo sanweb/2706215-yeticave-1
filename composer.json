@@ -1,0 +1,19 @@
+{
+    "name": "sanweb/yeticave",
+    "description": "Educational PHP project for an online auction platform",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sanweb\\Yeticave\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aleksandr Glushchenko"
+        }
+    ],
+    "require": {
+        "symfony/mailer": "*"
+    }
+}
