@@ -220,7 +220,7 @@ function get_user_by_email(mysqli $connection, string $email): ?array
 }
 
 /**
- * Returns the total number of lots matching the search phrase.
+ * Returns the total number of active lots matching the search phrase.
  *
  * @param mysqli $connection
  * @param string $search_phrase
@@ -231,7 +231,7 @@ function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): in
     $sql = <<<SQL
         SELECT COUNT(*) AS `total`
         FROM `lots`
-        WHERE MATCH(`title`, `description`) AGAINST (?)
+        WHERE MATCH(`title`, `description`) AGAINST (?) AND `expire_date` > CURRENT_DATE
     SQL;
 
     $result = get_stmt_result($connection, $sql, 's', [$search_phrase]);
@@ -240,7 +240,7 @@ function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): in
 }
 
 /**
- * Returns lots matching the search phrase for the specified page.
+ * Returns active lots matching the search phrase for the specified page.
  *
  * @param mysqli $connection
  * @param string $search_phrase
@@ -270,7 +270,7 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots
                 FROM `bets`
                 GROUP BY `lot_id`
             ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
-        WHERE MATCH(`title`, `description`) AGAINST (?)
+        WHERE MATCH(`title`, `description`) AGAINST (?) AND `expire_date` > CURRENT_DATE
         LIMIT ?
         OFFSET ?
     SQL;
