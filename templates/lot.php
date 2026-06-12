@@ -54,7 +54,7 @@
                         <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0, false) ?></span>
                     </div>
 
-                    <?php if ($is_bet_form_available): ?>
+                    <?php if (empty($lot['has_winner']) && empty($lot['is_expired'])): ?>
                         <div class="lot-item__min-cost">
                             Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0, true, ' р') ?></span>
                         </div>
