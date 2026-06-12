@@ -8,8 +8,6 @@ require_once __DIR__ . '/init.php';
 /** @var array  $user */
 /** @var array  $categories */
 
-$lots = get_recent_lots($db_connection);
-
 $main_content = include_template('404.php', [
     'categories' => $categories,
 ]);
