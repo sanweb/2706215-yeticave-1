@@ -14,17 +14,26 @@ const ASSET_TYPE_CSS = 'css';
 const ASSET_TYPE_JS  = 'js';
 
 /**
- * Formats a price and adds the ruble sign.
+ * Formats a price and optionally adds a currency sign suffix.
+ *
+ * The suffix is appended as-is and may include HTML and/or leading spaces
+ * if a visual separator between the price and the currency sign is needed.
  *
  * @param int $price Price value.
+ * @param bool $show_currency Whether to append the currency sign suffix.
+ * @param string $currency_sign_suffix Currency sign suffix appended to the formatted price.
  *
- * @return string Formatted price with the ruble sign.
+ * @return string Formatted price, optionally with the currency sign suffix.
  */
-function format_price(int $price): string
+function format_price(int $price, bool $show_currency = true, string $currency_sign_suffix = '<b class="rub">р</b>'): string
 {
     $formatted_price = number_format($price, 0, ',', ' ');
 
-    return $formatted_price . '<b class="rub">р</b>';
+    if ($show_currency) {
+        $formatted_price .= $currency_sign_suffix;
+    }
+
+    return $formatted_price;
 }
 
 /**
@@ -73,6 +82,20 @@ function format_time_left(array $time_left): string
     return sprintf('%02d:%02d', $time_left[0], $time_left[1]);
 }
 
+/**
+ * Returns elapsed time from the given datetime to the current moment.
+ *
+ * If the datetime is invalid, returns null as datetime and zero values
+ * for hours and minutes.
+ *
+ * @param string $datetime Datetime string in DATETIME_FORMAT format.
+ *
+ * @return array{
+ *     datetime: DateTimeImmutable|null,
+ *     hours: int,
+ *     minutes: int
+ * }
+ */
 function get_elapsed_time(string $datetime): array
 {
     $past_date = null;
@@ -98,6 +121,16 @@ function get_elapsed_time(string $datetime): array
     ];
 }
 
+/**
+ * Formats how much time has passed since a bet was created.
+ *
+ * Returns a relative value for today's bets, "Вчера в H:i" for yesterday's bets,
+ * or a full date and time for older bets.
+ *
+ * @param string $datetime Bet creation datetime in DATETIME_FORMAT format.
+ *
+ * @return string Formatted time since bet, or an empty string if datetime is invalid.
+ */
 function format_time_since_bet(string $datetime): string
 {
     $elapsed_time = get_elapsed_time($datetime);
@@ -129,15 +162,22 @@ function format_time_since_bet(string $datetime): string
                 ) . ' назад';
         }
     } elseif (is_yesterday($bet_created_datetime)) {
-        $time_since_bet = 'Вчера в ' . date_format($bet_created_datetime, 'H:m');
+        $time_since_bet = 'Вчера в ' . date_format($bet_created_datetime, 'H:i');
     } else {
         $time_since_bet = date_format($bet_created_datetime, 'd.m.Y')
-            . ' в ' . date_format($bet_created_datetime, 'H:m');
+            . ' в ' . date_format($bet_created_datetime, 'H:i');
     }
 
     return $time_since_bet;
 }
 
+/**
+ * Checks whether the given datetime is today.
+ *
+ * @param DateTimeImmutable $datetime Datetime to check.
+ *
+ * @return bool True if the datetime is today.
+ */
 function is_today(DateTimeImmutable $datetime): bool
 {
     $today = date_create_immutable('today');
@@ -145,6 +185,13 @@ function is_today(DateTimeImmutable $datetime): bool
     return date_format($datetime, DATE_FORMAT) === date_format($today, DATE_FORMAT);
 }
 
+/**
+ * Checks whether the given datetime is yesterday.
+ *
+ * @param DateTimeImmutable $datetime Datetime to check.
+ *
+ * @return bool True if the datetime is yesterday.
+ */
 function is_yesterday(DateTimeImmutable $datetime): bool
 {
     $yesterday = date_create_immutable('yesterday');
@@ -152,6 +199,14 @@ function is_yesterday(DateTimeImmutable $datetime): bool
     return date_format($datetime, DATE_FORMAT) === date_format($yesterday, DATE_FORMAT);
 }
 
+/**
+ * Checks whether a date or datetime string strictly matches the given format.
+ *
+ * @param string $value Date or datetime string.
+ * @param string $format Expected date format.
+ *
+ * @return bool True if the value is valid and strictly matches the format.
+ */
 function is_datetime_valid(string $value, string $format = DATE_FORMAT): bool
 {
     $datetime_obj = date_create_immutable_from_format($format, $value);
@@ -243,6 +298,14 @@ function dd(mixed ...$args): void
     echo '</pre>';
 }
 
+/**
+ * Renders the 404 error page and sends the HTTP 404 status code.
+ *
+ * @param array $categories List of categories used in the layout and 404 page.
+ * @param array|null $user Current authenticated user data, or null for guest.
+ *
+ * @return void
+ */
 function render_page_404(array $categories, ?array $user): void
 {
     http_response_code(HttpCodeEnum::NOT_FOUND->value);

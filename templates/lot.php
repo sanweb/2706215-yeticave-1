@@ -38,10 +38,10 @@
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0) ?></span>
+                        <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0, false) ?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0) ?></span>
+                        Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0, true, ' р') ?></span>
                     </div>
                 </div>
 

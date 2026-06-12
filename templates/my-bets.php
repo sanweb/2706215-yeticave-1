@@ -62,7 +62,7 @@
                     </td>
 
                     <td class="rates__price">
-                        <?php echo format_price($rate['bet_amount'] ?? 0); ?>
+                        <?php echo format_price($rate['bet_amount'] ?? 0, true, ' р'); ?>
                     </td>
 
                     <td class="rates__time">
