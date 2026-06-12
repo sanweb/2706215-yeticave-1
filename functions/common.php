@@ -322,3 +322,23 @@ function render_page_404(array $categories, ?array $user): void
 
     echo $page_content;
 }
+
+/**
+ * Returns a price label depending on the lot state.
+ *
+ * @param array $lot Lot data.
+ *
+ * @return string Price label.
+ */
+function get_lot_price_label(array $lot): string
+{
+    if (!empty($lot['has_winner'])) {
+        $price_label = 'Цена победителя';
+    } elseif (!empty($lot['is_expired'])) {
+        $price_label = 'Итоговая цена';
+    } else {
+        $price_label = 'Текущая цена';
+    }
+
+    return $price_label;
+}

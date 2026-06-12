@@ -93,6 +93,7 @@ function get_recent_lots(mysqli $connection, int $limit = LIMIT_RECENT_LOTS): ar
  *     min_bet: string,
  *     expire_date: string,
  *     is_expired: string,
+ *     has_winner: string,
  *     author_id: string,
  *     category_name: string,
  *     max_bet_user_id: string|null
@@ -112,6 +113,7 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
             IFNULL(MAX(bets.`amount`), lots.`start_price`) + lots.`bet_step` AS `min_bet`,
             DATE_FORMAT(lots.`expire_date`, '%Y-%m-%d') AS `expire_date`,
             IF(lots.`expire_date` <= CURRENT_DATE, 1, 0) AS `is_expired`,
+            IF(lots.`winner_bet_id` IS NOT NULL, 1, 0) AS `has_winner`,
             lots.`author_id`,
             categories.`name` AS `category_name`,
             (

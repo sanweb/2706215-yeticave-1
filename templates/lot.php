@@ -24,25 +24,37 @@
                     src="<?= esc($lot['image_url'] ?? '') ?>"
                     width="730"
                     height="548"
-                    alt="<?= esc($lot['title'] ?? '') ?>">
+                    alt="<?= esc($lot['title'] ?? '') ?>"
+                >
             </div>
             <p class="lot-item__category">Категория: <span><?= esc($lot['category_name'] ?? '') ?></span></p>
             <p class="lot-item__description"><?= esc($lot['description'] ?? '') ?></p>
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
-                <?php $time_left = get_time_left($lot['expire_date'] ?? ''); ?>
-                <div class="lot-item__timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
-                    <?= format_time_left($time_left) ?>
-                </div>
+
+                <?php if (!empty($lot['has_winner'])): ?>
+                    <div class="timer timer--win">Ставка выиграла</div>
+                <?php elseif (!empty($lot['is_expired'])): ?>
+                    <div class="timer timer--end">Торги окончены</div>
+                <?php else: ?>
+                    <?php $time_left = get_time_left($lot['expire_date'] ?? ''); ?>
+                    <div class="lot-item__timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
+                        <?= format_time_left($time_left) ?>
+                    </div>
+                <?php endif; ?>
+
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
-                        <span class="lot-item__amount">Текущая цена</span>
+                        <span class="lot-item__amount"><?= get_lot_price_label($lot) ?></span>
                         <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0, false) ?></span>
                     </div>
-                    <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0, true, ' р') ?></span>
-                    </div>
+
+                    <?php if ($is_bet_form_available): ?>
+                        <div class="lot-item__min-cost">
+                            Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0, true, ' р') ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <?php if ($is_bet_form_available): ?>
