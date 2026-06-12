@@ -1,14 +1,15 @@
 <?php
 
 /** @var array $categories */
+/** @var int   $current_category_id */
 
 ?>
 <footer class="main-footer">
     <nav class="nav">
 
-        <?= include_template('_partials/category-nav-list.php', [
+        <?= include_template('_partials/nav-list.php', [
             'categories' => $categories,
-            'is_promo' => false,
+            'current_category_id' => $current_category_id,
         ]) ?>
 
     </nav>

@@ -40,6 +40,7 @@ $js_files = $js_files ?? [];
 
     <?= include_template('layout/_footer.php', [
         'categories' => $categories,
+        'current_category_id' => (int) ($current_category_id ?? 0),
     ]) ?>
 
     <!-- page js -->

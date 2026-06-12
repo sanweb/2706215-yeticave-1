@@ -6,9 +6,8 @@
 ?>
 <nav class="nav">
 
-    <?= include_template('_partials/category-nav-list.php', [
+    <?= include_template('_partials/nav-list.php', [
         'categories' => $categories,
-        'is_promo'   => false,
     ]) ?>
 
 </nav>

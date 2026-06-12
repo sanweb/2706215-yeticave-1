@@ -1,16 +1,16 @@
 <?php
 
-/** @var array $categories */
-/** @var array $lots */
-/** @var array $pagination */
-/** @var int   $current_page */
+/** @var array  $categories */
+/** @var string $search_phrase */
+/** @var array  $search_results */
+/** @var array  $pagination */
+/** @var int    $current_page */
 
 ?>
 <nav class="nav">
 
-    <?= include_template('_partials/category-nav-list.php', [
+    <?= include_template('_partials/nav-list.php', [
         'categories' => $categories,
-        'is_promo' => false,
     ]) ?>
 
 </nav>
@@ -40,7 +40,9 @@
                         <div class="lot__info">
                             <span class="lot__category"><?= esc($lot['category_name'] ?? '') ?></span>
                             <h3 class="lot__title">
-                                <a class="text-link" href="/lot.php?id=<?= (int) ($lot['id'] ?? 0) ?>"><?= esc($lot['title'] ?? '') ?></a>
+                                <a class="text-link" href="/lot.php?id=<?= (int) ($lot['id'] ?? 0) ?>">
+                                    <?= esc($lot['title'] ?? '') ?>
+                                </a>
                             </h3>
                             <div class="lot__state">
                                 <div class="lot__rate">
