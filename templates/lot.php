@@ -31,7 +31,11 @@
             <p class="lot-item__description"><?= esc($lot['description'] ?? '') ?></p>
         </div>
         <div class="lot-item__right">
-            <div class="lot-item__state">
+            <?php $item_class_modifier = !empty($lot['has_winner'])
+                    ? ' rates__item rates__item--win'
+                    : (!empty($lot['is_expired']) ? ' rates__item rates__item--end' : '');
+                ?>
+            <div class="lot-item__state<?= $item_class_modifier ?>">
 
                 <?php if (!empty($lot['has_winner'])): ?>
                     <div class="timer timer--win">Ставка выиграла</div>
