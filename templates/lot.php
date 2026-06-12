@@ -65,7 +65,24 @@
                 <?php endif; ?>
 
             </div>
-            <!-- Bet history (not required yet) -->
+
+            <?php if (!empty($bet_history)): ?>
+                <div class="history">
+                    <h3>История ставок (<span><?= count($bet_history) ?></span>)</h3>
+                    <table class="history__list">
+
+                        <?php foreach ($bet_history as $bet): ?>
+                            <tr class="history__item">
+                                <td class="history__name"><?= esc($bet['user_name'] ?? '') ?></td>
+                                <td class="history__price"><?= format_price($bet['amount'] ?? 0, true, ' р') ?></td>
+                                <td class="history__time"><?= format_time_since_bet($bet['created_at']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </table>
+                </div>
+            <?php endif; ?>
+
         </div>
     </div>
 </section>

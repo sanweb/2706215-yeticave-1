@@ -73,10 +73,30 @@ function get_recent_lots(mysqli $connection, int $limit = LIMIT_RECENT_LOTS): ar
 }
 
 /**
- * @param mysqli $connection
- * @param int $id
+ * Returns a lot by ID with category name, current price and bet information.
  *
- * @return array|null
+ * The current price is the highest bet amount or the start price if there are no bets.
+ * The minimum bet is calculated as the current price plus the bet step.
+ * The expiration date is returned in YYYY-MM-DD format.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param int $id Lot ID.
+ *
+ * @return array{
+ *     id: string,
+ *     title: string,
+ *     description: string,
+ *     image_url: string,
+ *     start_price: string,
+ *     price: string,
+ *     bet_step: string,
+ *     min_bet: string,
+ *     expire_date: string,
+ *     is_expired: string,
+ *     author_id: string,
+ *     category_name: string,
+ *     max_bet_user_id: string|null
+ * }|null
  */
 function get_lot_by_id(mysqli $connection, int $id): ?array
 {
@@ -110,14 +130,19 @@ function get_lot_by_id(mysqli $connection, int $id): ?array
 
     $result = get_stmt_result($connection, $sql, 'i', [$id]);
 
-    return mysqli_fetch_assoc($result);
+    return mysqli_fetch_assoc($result) ?: null;
 }
 
 /**
- * @param mysqli $connection
- * @param array $data
+ * Creates a new lot.
  *
- * @return int
+ * The data array must contain values in the same order as the SQL placeholders:
+ * author ID, category ID, title, description, image URL, start price, bet step, expire date.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param array $data Lot data.
+ *
+ * @return int Created lot ID.
  */
 function create_lot(mysqli $connection, array $data): int
 {
@@ -144,10 +169,15 @@ function create_lot(mysqli $connection, array $data): int
 }
 
 /**
- * @param mysqli $connection
- * @param array $data
+ * Creates a new bet.
  *
- * @return int
+ * The data array must contain values in the same order as the SQL placeholders:
+ * user ID, lot ID, amount.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param array $data Bet data.
+ *
+ * @return int Created bet ID.
  */
 function create_bet(mysqli $connection, array $data): int
 {
@@ -169,10 +199,15 @@ function create_bet(mysqli $connection, array $data): int
 }
 
 /**
- * @param mysqli $connection
- * @param array $data
+ * Creates a new user account.
  *
- * @return int
+ * The data array must contain values in the same order as the SQL placeholders:
+ * email, name, password hash, contact info.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param array $data User data.
+ *
+ * @return int Created user ID.
  */
 function create_user(mysqli $connection, array $data): int
 {
@@ -195,10 +230,20 @@ function create_user(mysqli $connection, array $data): int
 }
 
 /**
- * @param mysqli $connection
- * @param string $email
+ * Returns a user by email.
  *
- * @return array|null
+ * @param mysqli $connection MySQL database connection.
+ * @param string $email User email.
+ *
+ * @return array{
+ *     id: string,
+ *     email: string,
+ *     name: string,
+ *     password_hash: string,
+ *     contact_info: string|null,
+ *     created_at: string,
+ *     updated_at: string|null
+ * }|null
  */
 function get_user_by_email(mysqli $connection, string $email): ?array
 {
@@ -217,15 +262,16 @@ function get_user_by_email(mysqli $connection, string $email): ?array
 
     $result = get_stmt_result($connection, $sql, 's', [$email]);
 
-    return mysqli_fetch_assoc($result);
+    return mysqli_fetch_assoc($result) ?: null;
 }
 
 /**
  * Returns the total number of active lots matching the search phrase.
  *
- * @param mysqli $connection
- * @param string $search_phrase
- * @return int Total number of matching lots.
+ * @param mysqli $connection MySQL database connection.
+ * @param string $search_phrase Search phrase.
+ *
+ * @return int Total number of matching active lots.
  */
 function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): int
 {
@@ -237,17 +283,29 @@ function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): in
 
     $result = get_stmt_result($connection, $sql, 's', [$search_phrase]);
 
-    return mysqli_fetch_column($result);
+    return (int) mysqli_fetch_column($result);
 }
 
 /**
  * Returns active lots matching the search phrase for the specified page.
  *
- * @param mysqli $connection
- * @param string $search_phrase
- * @param int $lots_per_page
- * @param int $page
- * @return array<int, array<string, mixed>> Matching lots list.
+ * The current price is the highest bet amount or the start price if there are no bets.
+ * The expiration date is returned in YYYY-MM-DD format.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param string $search_phrase Search phrase.
+ * @param int $lots_per_page Number of lots per page.
+ * @param int $page Current page number.
+ *
+ * @return array<int, array{
+ *     id: string,
+ *     title: string,
+ *     start_price: string,
+ *     image_url: string,
+ *     price: string,
+ *     expire_date: string,
+ *     category_name: string
+ * }>
  */
 function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots_per_page, int $page = 1): array
 {
@@ -282,9 +340,12 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots
 }
 
 /**
- * @param mysqli $connection
- * @param int $category_id
- * @return int Total number of matching lots.
+ * Returns the total number of active lots from the specified category.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param int $category_id Category ID.
+ *
+ * @return int Total number of matching active lots.
  */
 function get_total_lots_by_category_id(mysqli $connection, int $category_id): int
 {
@@ -296,15 +357,29 @@ function get_total_lots_by_category_id(mysqli $connection, int $category_id): in
 
     $result = get_stmt_result($connection, $sql, 'i', [$category_id]);
 
-    return mysqli_fetch_column($result);
+    return (int) mysqli_fetch_column($result);
 }
 
 /**
- * @param mysqli $connection
- * @param int $category_id
- * @param int $lots_per_page
- * @param int $page
- * @return array<int, array<string, mixed>> Matching lots list.
+ * Returns active lots from the specified category for the specified page.
+ *
+ * The current price is the highest bet amount or the start price if there are no bets.
+ * The expiration date is returned in YYYY-MM-DD format.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param int $category_id Category ID.
+ * @param int $lots_per_page Number of lots per page.
+ * @param int $page Current page number.
+ *
+ * @return array<int, array{
+ *     id: string,
+ *     title: string,
+ *     start_price: string,
+ *     image_url: string,
+ *     price: string,
+ *     expire_date: string,
+ *     category_name: string
+ * }>
  */
 function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots_per_page, int $page = 1): array
 {
@@ -339,10 +414,27 @@ function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots
 }
 
 /**
- * @param mysqli $connection
- * @param int $user_id
+ * Returns the user's latest bet for each lot.
  *
- * @return array
+ * For each lot, only the latest bet made by the user is returned.
+ * If the user's bet is the winning bet, the lot author's contact info is returned.
+ * Otherwise, contact_info is an empty string.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param int $user_id User ID.
+ *
+ * @return array<int, array{
+ *     lot_id: string,
+ *     title: string,
+ *     image_url: string,
+ *     expire_date: string,
+ *     is_expired: string,
+ *     is_win: string,
+ *     contact_info: string,
+ *     category_name: string,
+ *     bet_amount: string,
+ *     bet_created_at: string
+ * }>
  */
 function get_bets_by_user_id(mysqli $connection, int $user_id): array
 {
@@ -377,6 +469,39 @@ function get_bets_by_user_id(mysqli $connection, int $user_id): array
     SQL;
 
     $result = get_stmt_result($connection, $sql, 'i', [$user_id]);
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * Returns bet history for the specified lot.
+ *
+ * Bets are sorted from newest to oldest.
+ * The creation date is returned in YYYY-MM-DD HH:MM:SS format.
+ *
+ * @param mysqli $connection MySQL database connection.
+ * @param int $lot_id Lot ID.
+ *
+ * @return array<int, array{
+ *     user_name: string,
+ *     amount: string,
+ *     created_at: string
+ * }>
+ */
+function get_bet_history_by_lot_id(mysqli $connection, int $lot_id): array
+{
+    $sql = <<<SQL
+        SELECT
+            users.`name` AS `user_name`,
+            bets.`amount`,
+            DATE_FORMAT(bets.`created_at`, '%Y-%m-%d %H:%i:%s') AS `created_at`
+        FROM bets
+            JOIN `users` ON bets.`user_id` = users.`id`
+        WHERE `lot_id` = ?
+        ORDER BY bets.`created_at` DESC
+    SQL;
+
+    $result = get_stmt_result($connection, $sql, 'i', [$lot_id]);
 
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

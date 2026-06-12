@@ -47,7 +47,9 @@ if ($is_bet_form_available && is_post_request()) {
     }
 }
 
-$main_data = compact('lot', 'categories', 'is_bet_form_available');
+$bet_history = get_bet_history_by_lot_id($db_connection, $lot_id);
+
+$main_data = compact('lot', 'categories', 'is_bet_form_available', 'bet_history');
 
 if ($is_bet_form_available) {
     $main_data = array_merge($main_data, [
