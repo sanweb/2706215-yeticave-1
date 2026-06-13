@@ -3,6 +3,7 @@ services:
     build:
       context: ./php
       dockerfile: Dockerfile
+    # Load application settings from .env
     env_file:
       - ./../.env
     ports:
@@ -12,22 +13,9 @@ services:
       # Mount the project source code into the container
       - ./..:/var/www/html
     environment:
-      # Application settings
-      APP_URL: ${APP_URL}
-
-      # Database connection settings for the PHP app
+      # Docker-specific overrides. Other variables are loaded from .env.
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-
-      # SMTP connection settings
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      SMTP_ENCRYPTION: ${SMTP_ENCRYPTION}
     depends_on:
       # Start the database container before the app container
       - db
