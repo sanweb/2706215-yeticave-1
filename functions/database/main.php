@@ -294,7 +294,6 @@ function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): in
  *
  * @param mysqli $connection MySQL database connection.
  * @param string $search_phrase Search phrase.
- * @param int $lots_per_page Number of lots per page.
  * @param int $page Current page number.
  *
  * @return array<int, array{
@@ -307,10 +306,10 @@ function get_total_lots_by_phrase(mysqli $connection, string $search_phrase): in
  *     category_name: string
  * }>
  */
-function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $lots_per_page, int $page = 1): array
+function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $page = 1): array
 {
     $page = (int) max(1, $page);
-    $lots_per_page = (int) max(1, $lots_per_page);
+    $lots_per_page = LOTS_PER_PAGE;
     $offset = (int) ($page - 1) * $lots_per_page;
 
     $sql = <<<SQL
