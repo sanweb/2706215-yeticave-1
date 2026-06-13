@@ -570,7 +570,6 @@ function assign_lot_winner_bet_id(mysqli $connection, int $lot_id, int $bet_id):
     SQL;
 
     $stmt = execute_stmt($connection, $sql, 'ii', [$bet_id, $lot_id]);
-
     $affected_rows = mysqli_stmt_affected_rows($stmt);
 
     if ($affected_rows !== 1) {

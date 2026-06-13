@@ -55,7 +55,6 @@ if ($is_bet_form_available) {
 }
 
 $main_content = include_template('lot.php', $main_data);
-
 $page_content = include_template('layout/main.php', [
     'page_title'     => $lot['title'] ?? '',
     'user'           => $user,
