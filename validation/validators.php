@@ -214,14 +214,15 @@ function validate_date(string $field, array $data, array $params = [], array $co
 function validate_exists(string $field, array $data, array $params = [], array $context = []): ?string
 {
     $db_connection = $context['db'] ?? null;
+    $target = $params['target'] ?? null;
 
     if (!isset($data[$field]) || is_empty($data[$field])) {
         $message = null;
     } elseif (!$db_connection instanceof mysqli) {
         $message = 'Ошибка валидации';
-    } elseif (!isset($params['target']) || !is_exists_validator_allowed_target((string) $params['target'])) {
+    } elseif (!is_string($target) || !is_exists_validator_allowed_target($target)) {
         $message = 'Ошибка валидации';
-    } elseif (!is_db_value_exists($db_connection, $params['target'], $data[$field])) {
+    } elseif (!is_db_value_exists($db_connection, $target, $data[$field])) {
         $message = 'Недопустимое значение';
     }
 
@@ -243,14 +244,15 @@ function validate_exists(string $field, array $data, array $params = [], array $
 function validate_unique(string $field, array $data, array $params = [], array $context = []): ?string
 {
     $db_connection = $context['db'] ?? null;
+    $target = $params['target'] ?? null;
 
     if (!isset($data[$field]) || is_empty($data[$field])) {
         $message = null;
     } elseif (!$db_connection instanceof mysqli) {
         $message = 'Ошибка валидации';
-    } elseif (!isset($params['target']) || !is_exists_validator_allowed_target((string) $params['target'])) {
+    } elseif (!is_string($target) || !is_exists_validator_allowed_target($target)) {
         $message = 'Ошибка валидации';
-    } elseif (is_db_value_exists($db_connection, $params['target'], $data[$field])) {
+    } elseif (is_db_value_exists($db_connection, $target, $data[$field])) {
         $message = 'Значение уже используется';
     }
 

@@ -3,38 +3,13 @@
 declare(strict_types=1);
 
 /**
- * Returns the current request URI.
- *
- * The URI usually contains the path and query string, for example:
- * /lots.php?id=10.
- *
- * @return string Current request URI or an empty string if it is not available.
- */
-function get_request_uri(): string
-{
-    return $_SERVER['REQUEST_URI'] ?? '';
-}
-
-/**
- * Returns the current HTTP request method.
- *
- * For example: GET, POST.
- *
- * @return string Current request method or an empty string if it is not available.
- */
-function get_request_method(): string
-{
-    return strtoupper($_SERVER['REQUEST_METHOD'] ?? '');
-}
-
-/**
  * Checks whether the current request method is POST.
  *
  * @return bool True if the current request method is POST.
  */
 function is_post_request(): bool
 {
-    return get_request_method() === HttpMethodEnum::POST->value;
+    return strtoupper($_SERVER['REQUEST_METHOD'] ?? '') === HttpMethodEnum::POST->value;
 }
 
 /**

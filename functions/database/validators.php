@@ -88,7 +88,6 @@ function cast_value_to_mysqli_bind_type(string $value, string $mysqli_bind_type)
     return match ($mysqli_bind_type) {
         'i'     => (int) $value,
         'd'     => (float) $value,
-        's'     => $value,
         default => $value, // fallback to string
     };
 }
