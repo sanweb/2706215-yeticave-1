@@ -26,16 +26,13 @@ if (is_post_request()) {
     );
 
     if (empty($form_errors)) {
-        $email = $form_data['email'] ?? '';
-        $password = $form_data['password'] ?? '';
+        $user = get_user_by_email($db_connection, $form_data['email'] ?? '');
 
-        $user = get_user_by_email($db_connection, $email);
-
-        if (!empty($user) && authenticate_user($user, $password)) {
-            // authorized
+        if (!empty($user) && authenticate_user($user, $form_data['password'] ?? '')) {
+            // Redirect auth user
             redirect_to('/');
         } else {
-            $login_error = 'Неправильный логин или пароль';
+            $login_error = 'Вы ввели неверный email/пароль';
             $form_errors['email'] = $login_error;
             $form_errors['password'] = $login_error;
         }

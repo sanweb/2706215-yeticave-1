@@ -10,9 +10,8 @@
 ?>
 <nav class="nav">
 
-    <?= include_template('_partials/category-nav-list.php', [
+    <?= include_template('_partials/nav-list.php', [
         'categories' => $categories,
-        'is_promo' => false,
     ]) ?>
 
 </nav>
@@ -25,25 +24,41 @@
                     src="<?= esc($lot['image_url'] ?? '') ?>"
                     width="730"
                     height="548"
-                    alt="<?= esc($lot['title'] ?? '') ?>">
+                    alt="<?= esc($lot['title'] ?? '') ?>"
+                >
             </div>
             <p class="lot-item__category">Категория: <span><?= esc($lot['category_name'] ?? '') ?></span></p>
             <p class="lot-item__description"><?= esc($lot['description'] ?? '') ?></p>
         </div>
         <div class="lot-item__right">
-            <div class="lot-item__state">
-                <?php $time_left = get_time_left($lot['expire_date'] ?? ''); ?>
-                <div class="lot-item__timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
-                    <?= format_time_left($time_left) ?>
-                </div>
+            <?php $item_class_modifier = !empty($lot['has_winner'])
+                    ? ' rates__item rates__item--win'
+                    : (!empty($lot['is_expired']) ? ' rates__item rates__item--end' : '');
+                ?>
+            <div class="lot-item__state<?= $item_class_modifier ?>">
+
+                <?php if (!empty($lot['has_winner'])): ?>
+                    <div class="timer timer--win">Ставка выиграла</div>
+                <?php elseif (!empty($lot['is_expired'])): ?>
+                    <div class="timer timer--end">Торги окончены</div>
+                <?php else: ?>
+                    <?php $time_left = get_time_left($lot['expire_date'] ?? ''); ?>
+                    <div class="lot-item__timer timer<?= $time_left[0] === 0 ? ' timer--finishing' : '' ?>">
+                        <?= format_time_left($time_left) ?>
+                    </div>
+                <?php endif; ?>
+
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
-                        <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0) ?></span>
+                        <span class="lot-item__amount"><?= get_lot_price_label($lot) ?></span>
+                        <span class="lot-item__cost"><?= format_price($lot['price'] ?? 0, false) ?></span>
                     </div>
-                    <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0) ?></span>
-                    </div>
+
+                    <?php if (empty($lot['has_winner']) && empty($lot['is_expired'])): ?>
+                        <div class="lot-item__min-cost">
+                            Мин. ставка <span><?= format_price($lot['min_bet'] ?? 0, true, ' р') ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <?php if ($is_bet_form_available): ?>
@@ -66,7 +81,24 @@
                 <?php endif; ?>
 
             </div>
-            <!-- Bet history (not required yet) -->
+
+            <?php if (!empty($bet_history)): ?>
+                <div class="history">
+                    <h3>История ставок (<span><?= count($bet_history) ?></span>)</h3>
+                    <table class="history__list">
+
+                        <?php foreach ($bet_history as $bet): ?>
+                            <tr class="history__item">
+                                <td class="history__name"><?= esc($bet['user_name'] ?? '') ?></td>
+                                <td class="history__price"><?= format_price($bet['amount'] ?? 0, true, ' р') ?></td>
+                                <td class="history__time"><?= format_time_since_bet($bet['created_at']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </table>
+                </div>
+            <?php endif; ?>
+
         </div>
     </div>
 </section>

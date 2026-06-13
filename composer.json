@@ -1,0 +1,15 @@
+{
+    "name": "sanweb/yeticave",
+    "description": "Educational PHP project for an online auction platform",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksandr Glushchenko"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "symfony/mailer": "^8.1"
+    }
+}

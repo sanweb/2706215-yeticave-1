@@ -8,6 +8,8 @@ require_once __DIR__ . '/init.php';
 /** @var array  $user */
 /** @var array  $categories */
 
+require_once __DIR__ . '/getwinner.php';
+
 $lots = get_recent_lots($db_connection);
 
 $main_content = include_template('main.php', [

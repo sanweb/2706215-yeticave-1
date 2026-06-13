@@ -1,32 +1,30 @@
 <?php
 
-/** @var array  $categories */
-/** @var string $search_phrase */
-/** @var array  $search_results */
-/** @var array  $pagination */
-/** @var int    $current_page */
+/** @var array $categories */
+/** @var array $category */
+/** @var array $lots */
+/** @var array $pagination */
+/** @var int   $current_page */
 
 ?>
 <nav class="nav">
 
     <?= include_template('_partials/nav-list.php', [
         'categories' => $categories,
+        'current_category_id' => (int) ($category['id'] ?? 0),
     ]) ?>
 
 </nav>
 <div class="container">
     <section class="lots">
         <div class="lots__header">
-            <h2>
-                Результаты поиска
-                <?php if ($search_phrase): ?> по запросу «<span><?= $search_phrase ?></span>»<?php endif; ?>
-            </h2>
+            <h2>Все лоты в категории «<span><?= esc($category['name'] ?? '') ?></span>»</h2>
         </div>
 
-        <?php if (!empty($search_results)): ?>
+        <?php if (!empty($lots)): ?>
             <ul class="lots__list">
 
-                <?php foreach ($search_results as $lot): ?>
+                <?php foreach ($lots as $lot): ?>
                     <li class="lots__item lot">
                         <div class="lot__image">
                             <img
@@ -60,8 +58,8 @@
                 <?php endforeach; ?>
 
             </ul>
-        <?php elseif ($search_phrase !== ''): ?>
-            <p>Ничего не найдено по вашему запросу</p>
+        <?php else: ?>
+            <p>Нет активных лотов в данной категории</p>
         <?php endif; ?>
 
     </section>

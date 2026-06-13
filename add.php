@@ -35,8 +35,6 @@ if (is_post_request()) {
         if ($lot_id) {
             redirect_to('/lot.php?id=' . $lot_id);
         }
-
-        // TODO: Add proper error handling if lot creation fails.
     }
 }
 

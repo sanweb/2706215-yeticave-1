@@ -12,14 +12,8 @@ $lot_id = (int) get_query_param('id', 0);
 $lot = $lot_id > 0 ? get_lot_by_id($db_connection, $lot_id) : null;
 
 if ($lot === null) {
-    http_response_code(HttpCodeEnum::NOT_FOUND->value);
-    $page_title = '404 Страница не найдена';
-    $main_template = '404.php';
-    $main_data = compact('categories');
-} else {
-    $page_title = $lot['title'] ?? '';
-    $main_template = 'lot.php';
-    $main_data = compact('lot', 'categories');
+    render_page_404($categories, $user);
+    exit;
 }
 
 // Process bet form
@@ -48,10 +42,12 @@ if ($is_bet_form_available && is_post_request()) {
         if (create_bet($db_connection, $data)) {
             redirect_to('/lot.php?id=' . $lot_id);
         }
-
-        // TODO: Add proper error handling if bet creation fails.
     }
 }
+
+$bet_history = get_bet_history_by_lot_id($db_connection, $lot_id);
+
+$main_data = compact('lot', 'categories', 'is_bet_form_available', 'bet_history');
 
 if ($is_bet_form_available) {
     $main_data = array_merge($main_data, [
@@ -61,12 +57,10 @@ if ($is_bet_form_available) {
     ]);
 }
 
-$main_data['is_bet_form_available'] = $is_bet_form_available;
-
-$main_content = include_template($main_template, $main_data);
+$main_content = include_template('lot.php', $main_data);
 
 $page_content = include_template('layout/main.php', [
-    'page_title'     => $page_title,
+    'page_title'     => $lot['title'] ?? '',
     'user'           => $user,
     'categories'     => $categories,
     'main_content'   => $main_content,

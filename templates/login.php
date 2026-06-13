@@ -1,7 +1,6 @@
 <?php
 
 /** @var array  $categories */
-/** @var array  $lot */
 /** @var string $form_name */
 /** @var array  $form_data */
 /** @var array  $form_errors */
@@ -9,9 +8,8 @@
 ?>
 <nav class="nav">
 
-    <?= include_template('_partials/category-nav-list.php', [
+    <?= include_template('_partials/nav-list.php', [
         'categories' => $categories,
-        'is_promo'   => false,
     ]) ?>
 
 </nav>

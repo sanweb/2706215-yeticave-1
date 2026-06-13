@@ -3,9 +3,19 @@
 declare(strict_types=1);
 
 /**
- * Required form fields grouped by form key.
+ * Validation rules grouped by form key.
  *
- * @var array<string, string[]>
+ * Structure:
+ * [
+ *     form_key => [
+ *         field_name => [
+ *             validator,
+ *             validator:param=value,
+ *         ],
+ *     ],
+ * ]
+ *
+ * @var array<string, array<string, list<string>>>
  */
 const VALIDATION_RULES = [
     CREATE_LOT_FORM_KEY => [

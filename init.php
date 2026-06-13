@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 date_default_timezone_set('Europe/Moscow');
 
-const BASE_PATH = __DIR__;
+define('BASE_PATH', __DIR__);
+define('BASE_URL', getenv('APP_URL') ?? 'http://localhost:8080');
 
 require_once BASE_PATH . '/config/const.php';
 require_once BASE_PATH . '/enum/HttpMethodEnum.php';
