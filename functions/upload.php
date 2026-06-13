@@ -21,32 +21,29 @@ const ALLOWED_IMAGE_TYPES = [
  */
 function save_uploaded_file(string $input_name): string|false
 {
-    if (!is_uploaded_file_valid($input_name)) {
-        return false;
+    $is_saved = false;
+    $file_url = '';
+
+    if (is_uploaded_file_valid($input_name)) {
+        $file_name = $_FILES[$input_name]['name'];
+        $tmp_name = $_FILES[$input_name]['tmp_name'];
+
+        $extension = get_uploaded_file_extension($file_name);
+        $mime_type = mime_content_type($tmp_name);
+
+        if (is_uploaded_image_type_allowed($extension, $mime_type)) {
+            $new_file_name = generate_uploaded_file_name($tmp_name, $extension);
+
+            if ($new_file_name !== false) {
+                $file_path = UPLOADS_DIR . '/' . $new_file_name;
+                $file_url = UPLOADS_URL . '/' . $new_file_name;
+
+                $is_saved = move_uploaded_file($tmp_name, $file_path);
+            }
+        }
     }
 
-    $file_name = $_FILES[$input_name]['name'];
-    $tmp_name = $_FILES[$input_name]['tmp_name'];
-
-    $extension = get_uploaded_file_extension($file_name);
-    $mime_type = mime_content_type($tmp_name);
-
-    if (!is_uploaded_image_type_allowed($extension, $mime_type)) {
-        return false;
-    }
-
-    $new_file_name = generate_uploaded_file_name($tmp_name, $extension);
-
-    if ($new_file_name === false) {
-        return false;
-    }
-
-    $file_path = UPLOADS_DIR . '/' . $new_file_name;
-    $file_url = UPLOADS_URL . '/' . $new_file_name;
-
-    $saved = move_uploaded_file($tmp_name, $file_path);
-
-    return $saved ? $file_url : false;
+    return $is_saved ? $file_url : false;
 }
 
 /**
@@ -58,18 +55,19 @@ function save_uploaded_file(string $input_name): string|false
  */
 function is_uploaded_file_valid(string $input_name): bool
 {
+    $is_valid = false;
+
     if (
-        empty($_FILES[$input_name]) ||
-        empty($_FILES[$input_name]['name']) ||
-        empty($_FILES[$input_name]['tmp_name']) ||
-        $_FILES[$input_name]['error'] !== UPLOAD_ERR_OK
+        !empty($_FILES[$input_name])
+        && !empty($_FILES[$input_name]['name'])
+        && !empty($_FILES[$input_name]['tmp_name'])
+        && $_FILES[$input_name]['error'] === UPLOAD_ERR_OK
     ) {
-        return false;
+        $file_size = $_FILES[$input_name]['size'];
+        $is_valid = $file_size > 0 && $file_size <= MAX_UPLOADED_FILE_SIZE;
     }
 
-    $file_size = $_FILES[$input_name]['size'];
-
-    return $file_size > 0 && $file_size <= MAX_UPLOADED_FILE_SIZE;
+    return $is_valid;
 }
 
 /**
@@ -94,12 +92,9 @@ function get_uploaded_file_extension(string $file_name): string
  */
 function is_uploaded_image_type_allowed(string $extension, string|false $mime_type): bool
 {
-    if ($mime_type === false) {
-        return false;
-    }
-
-    return isset(ALLOWED_IMAGE_TYPES[$extension]) &&
-        ALLOWED_IMAGE_TYPES[$extension] === $mime_type;
+    return $mime_type !== false
+        && isset(ALLOWED_IMAGE_TYPES[$extension])
+        && ALLOWED_IMAGE_TYPES[$extension] === $mime_type;
 }
 
 /**
@@ -114,9 +109,5 @@ function generate_uploaded_file_name(string $tmp_name, string $extension): strin
 {
     $hash = md5_file($tmp_name);
 
-    if ($hash === false) {
-        return false;
-    }
-
-    return $hash . '.' . $extension;
+    return $hash !== false ? ($hash . '.' . $extension) : false;
 }
