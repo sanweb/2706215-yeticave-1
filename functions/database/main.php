@@ -310,7 +310,7 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $page
 {
     $page = (int) max(1, $page);
     $lots_per_page = LOTS_PER_PAGE;
-    $offset = (int) ($page - 1) * $lots_per_page;
+    $offset = ($page - 1) * $lots_per_page;
 
     $sql = <<<SQL
         SELECT
@@ -329,6 +329,7 @@ function get_lots_by_phrase(mysqli $connection, string $search_phrase, int $page
                 GROUP BY `lot_id`
             ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
         WHERE MATCH(`title`, `description`) AGAINST (?) AND `expire_date` > CURRENT_DATE
+        ORDER BY lots.`created_at` DESC
         LIMIT ?
         OFFSET ?
     SQL;
@@ -384,7 +385,7 @@ function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots
 {
     $page = (int) max(1, $page);
     $lots_per_page = (int) max(1, $lots_per_page);
-    $offset = (int) ($page - 1) * $lots_per_page;
+    $offset = ($page - 1) * $lots_per_page;
 
     $sql = <<<SQL
         SELECT
@@ -403,6 +404,7 @@ function get_lots_by_category_id(mysqli $connection, int $category_id, int $lots
                 GROUP BY `lot_id`
             ) AS lot_bets ON lot_bets.`lot_id` = lots.`id`
         WHERE `category_id` = ? AND `expire_date` > CURRENT_DATE
+        ORDER BY lots.`created_at` DESC
         LIMIT ?
         OFFSET ?
     SQL;
@@ -555,10 +557,8 @@ function get_lot_winner_candidates(mysqli $connection): array
  * The winner is assigned only if the lot does not already have a winner.
  *
  * @param mysqli $connection MySQL database connection.
- * @param array{
- *     0: int,
- *     1: int
- * } $data Winner data: winning bet ID and lot ID.
+ * @param int $lot_id Lot ID.
+ * @param int $bet_id Winning bet ID.
  *
  * @return int Number of affected rows.
  */
@@ -571,8 +571,6 @@ function assign_lot_winner_bet_id(mysqli $connection, int $lot_id, int $bet_id):
     SQL;
 
     $stmt = execute_stmt($connection, $sql, 'ii', [$bet_id, $lot_id]);
-
-    dd($stmt, $connection);
 
     $affected_rows = mysqli_stmt_affected_rows($stmt);
 

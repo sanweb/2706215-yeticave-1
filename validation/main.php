@@ -70,8 +70,6 @@ function validate_form_data(
  */
 function parse_validator(string $validator_string): array
 {
-    $validator_alias = null;
-    $validator_func = null;
     $params = [];
 
     if (!str_contains($validator_string, VALIDATOR_SEPARATOR)) {
