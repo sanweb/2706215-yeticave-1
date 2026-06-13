@@ -137,14 +137,10 @@ function is_bet_form_available(array $lot, ?int $user_id): bool
  */
 function normalize_search_phrase(mixed $value): string
 {
-    if (is_string($value)) {
-        $value = trim($value);
+    $value = is_string($value) ? trim($value) : '';
 
-        if (mb_strlen($value) > SEARCH_PHRASE_MAX_LENGTH) {
-            $value = mb_substr($value, 0, SEARCH_PHRASE_MAX_LENGTH);
-        }
-    } else {
-        $value = '';
+    if (mb_strlen($value) > SEARCH_PHRASE_MAX_LENGTH) {
+        $value = mb_substr($value, 0, SEARCH_PHRASE_MAX_LENGTH);
     }
 
     return $value;
