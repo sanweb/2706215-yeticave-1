@@ -12,15 +12,8 @@ define('BASE_URL', getenv('APP_URL') ?? 'http://localhost:8080');
 require_once BASE_PATH . '/config/const.php';
 require_once BASE_PATH . '/enum/HttpMethodEnum.php';
 require_once BASE_PATH . '/enum/HttpCodeEnum.php';
-require_once BASE_PATH . '/functions/helpers.php';
-require_once BASE_PATH . '/functions/request.php';
-require_once BASE_PATH . '/functions/common.php';
-require_once BASE_PATH . '/functions/database/index.php';
+require_once BASE_PATH . '/functions/index.php';
 require_once BASE_PATH . '/validation/index.php';
-require_once BASE_PATH . '/functions/upload.php';
-require_once BASE_PATH . '/functions/form.php';
-require_once BASE_PATH . '/functions/auth.php';
-require_once BASE_PATH . '/functions/pagination.php';
 
 $db_config = require BASE_PATH . '/config/db.php';
 $db_connection = db_connect($db_config);
