@@ -300,7 +300,6 @@ function render_page_404(array $categories, ?array $user): void
     http_response_code(HttpCodeEnum::NOT_FOUND->value);
 
     $main_content = include_template('404.php', compact('categories'));
-
     $page_content = include_template('layout/main.php', [
         'page_title'     => '404 Страница не найдена',
         'user'           => $user,

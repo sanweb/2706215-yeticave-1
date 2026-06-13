@@ -16,7 +16,6 @@ declare(strict_types=1);
 function get_all_categories(mysqli $connection): array
 {
     $sql = 'SELECT `id`, `name`, `slug` FROM `categories`';
-
     $result = get_query_result($connection, $sql);
 
     return mysqli_fetch_all($result, MYSQLI_ASSOC);

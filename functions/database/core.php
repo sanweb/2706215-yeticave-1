@@ -92,7 +92,6 @@ function execute_stmt(mysqli $connection, string $sql, string $types = '', array
 function get_stmt_result(mysqli $connection, string $sql, string $types = '', array $params = []): mysqli_result
 {
     $stmt = execute_stmt($connection, $sql, $types, $params);
-
     $result = mysqli_stmt_get_result($stmt);
 
     if ($result === false) {

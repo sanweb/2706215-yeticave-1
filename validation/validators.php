@@ -72,6 +72,9 @@ function get_validator_function(string $validator_alias): ?callable
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
 function validate_required(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -94,6 +97,9 @@ function validate_required(string $field, array $data, array $params = [], array
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
 function validate_int(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -119,6 +125,9 @@ function validate_int(string $field, array $data, array $params = [], array $con
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
 function validate_string(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -144,6 +153,9 @@ function validate_string(string $field, array $data, array $params = [], array $
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
 function validate_email(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -165,12 +177,15 @@ function validate_email(string $field, array $data, array $params = [], array $c
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
 function validate_date(string $field, array $data, array $params = [], array $context = []): ?string
 {
     if (!isset($data[$field])) {
         $message = null;
-    } elseif (!is_datetime_valid($data[$field], DATE_FORMAT)) {
+    } elseif (!is_datetime_valid($data[$field])) {
         $message = 'Некорректная дата';
     } elseif (isset($params['gt'])) {
         $current_date = strtotime($data[$field]);
@@ -193,6 +208,8 @@ function validate_date(string $field, array $data, array $params = [], array $co
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
  */
 function validate_exists(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -220,6 +237,8 @@ function validate_exists(string $field, array $data, array $params = [], array $
  * @param array<string, mixed> $context Validation context.
  *
  * @return string|null Error message or null if valid.
+ *
+ * @noinspection PhpUnused
  */
 function validate_unique(string $field, array $data, array $params = [], array $context = []): ?string
 {
