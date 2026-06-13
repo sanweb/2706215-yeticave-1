@@ -42,8 +42,6 @@ if ($is_bet_form_available && is_post_request()) {
         if (create_bet($db_connection, $data)) {
             redirect_to('/lot.php?id=' . $lot_id);
         }
-
-        // TODO: Add proper error handling if bet creation fails.
     }
 }
 

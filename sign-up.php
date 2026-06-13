@@ -34,8 +34,6 @@ if (is_post_request()) {
             // Redirect registered user
             redirect_to('/login.php');
         }
-
-        // TODO: Add proper error handling if user creation fails.
     }
 }
 
