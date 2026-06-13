@@ -23,7 +23,11 @@ declare(strict_types=1);
  * in the signature to make all validators callable in the same way.
  */
 
-// Available validators
+/**
+ * Registered validator aliases.
+ *
+ * @var list<string>
+ */
 const REGISTERED_VALIDATORS = [
     'required',
     'int',
@@ -34,40 +38,40 @@ const REGISTERED_VALIDATORS = [
     'unique',
 ];
 
-// Validator function prefix
+/**
+ * Prefix used to build validator function names.
+ */
 const VALIDATOR_FUNCTION_PREFIX = 'validate_';
 
 /**
- * @param string $validator_alias
+ * Returns validator function by alias.
  *
- * @return callable|null Validator function if it is defined or null otherwise.
+ * @param string $validator_alias Validator alias.
+ *
+ * @return callable|null Validator function or null if unavailable.
  */
 function get_validator_function(string $validator_alias): ?callable
 {
     if (in_array($validator_alias, REGISTERED_VALIDATORS, true)) {
         $validator_func = VALIDATOR_FUNCTION_PREFIX . $validator_alias;
-    } /* else {
-        exit('Попытка применения незарегистрированного валидатора');
-    } */
+    }
 
     if (!isset($validator_func) || !is_callable($validator_func)) {
         $validator_func = null;
-        //exit('Ошибка получения функции валидации');
     }
-
-    // TODO: Add proper error handling if validator function is not defined.
 
     return $validator_func ?? null;
 }
 
 /**
- * Validates that field value is not empty.
+ * Validates that the field is not empty.
  *
  * @param string $field Field name.
  * @param array<string, mixed> $data Form data.
  * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_required(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -82,14 +86,14 @@ function validate_required(string $field, array $data, array $params = [], array
 }
 
 /**
- * Validator
+ * Validates an integer field.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_int(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -107,14 +111,14 @@ function validate_int(string $field, array $data, array $params = [], array $con
 }
 
 /**
- * Validator
+ * Validates a string field.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_string(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -132,14 +136,14 @@ function validate_string(string $field, array $data, array $params = [], array $
 }
 
 /**
- * Validator
+ * Validates an email field.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_email(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -153,14 +157,14 @@ function validate_email(string $field, array $data, array $params = [], array $c
 }
 
 /**
- * Validator
+ * Validates a date field.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_date(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -181,14 +185,14 @@ function validate_date(string $field, array $data, array $params = [], array $co
 }
 
 /**
- * Validator
+ * Validates that the field value exists in the database.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_exists(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -208,14 +212,14 @@ function validate_exists(string $field, array $data, array $params = [], array $
 }
 
 /**
- * Validator
+ * Validates that the field value is unique in the database.
  *
- * @param string $field
- * @param array $data
- * @param array $params
- * @param array $context
+ * @param string $field Field name.
+ * @param array<string, mixed> $data Form data.
+ * @param array<string, string> $params Validator parameters.
+ * @param array<string, mixed> $context Validation context.
  *
- * @return string|null
+ * @return string|null Error message or null if valid.
  */
 function validate_unique(string $field, array $data, array $params = [], array $context = []): ?string
 {
@@ -235,13 +239,13 @@ function validate_unique(string $field, array $data, array $params = [], array $
 }
 
 /**
- * Helper
+ * Checks whether a value is empty for validation purposes.
  *
- * @param mixed $value
+ * @param mixed $value Value to check.
  *
- * @return bool
+ * @return bool True if value is empty.
  */
-function is_empty($value): bool
+function is_empty(mixed $value): bool
 {
     return $value === null || $value === [] || $value === '';
 }

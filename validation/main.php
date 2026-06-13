@@ -7,16 +7,32 @@ const VALIDATOR_PARAMS_SEPARATOR = '&';
 const VALIDATOR_PARAM_VALUE_SEPARATOR = '=';
 
 /**
- * Validates required form fields and returns validation errors.
+ * Validates form data using the given validation rules.
  *
- * @param array<string, string[]> $rules Required field rules (field => validators).
+ * Each rule contains a field name and a list of validators.
+ * Validator strings may contain additional parameters.
+ *
+ * Examples:
+ * - `required`
+ * - `string:min=5&max=255`
+ * - `exists:target=categories.id`
+ *
+ * Validator callback signature:
+ * `validator(string $field, array $form_data, array $params, array $context): ?string`
+ *
+ * @param array<string, list<string>> $rules Validation rules indexed by field name.
  * @param array<string, mixed> $form_data Submitted form data.
  * @param array<string, string> $form_errors Existing validation errors indexed by field name.
+ * @param array<string, mixed> $context Additional validation context.
  *
- * @return array<string, string> Updated validation errors indexed by field name.
+ * @return array<string, string> Validation errors indexed by field name.
  */
-function validate_form_data(array $rules = [], array $form_data = [], array $form_errors = [], $context = []): array
-{
+function validate_form_data(
+    array $rules = [],
+    array $form_data = [],
+    array $form_errors = [],
+    array $context = []
+): array {
     foreach ($rules as $field => $validators) {
         unset($form_errors[$field]);
 
@@ -41,9 +57,16 @@ function validate_form_data(array $rules = [], array $form_data = [], array $for
 }
 
 /**
- * @param string $validator_string
+ * Parses a validator string into a validator function and its parameters.
  *
- * @return array
+ * Examples:
+ * - `required`
+ * - `string:min=5&max=255`
+ * - `exists:target=categories.id`
+ *
+ * @param string $validator_string Validator alias with optional parameters.
+ *
+ * @return array{0: callable|null, 1: array<string, string>} Validator function and parsed parameters.
  */
 function parse_validator(string $validator_string): array
 {
@@ -62,18 +85,25 @@ function parse_validator(string $validator_string): array
     }
 
     $validator_func = get_validator_function($validator_alias);
-    /*
-    if (!is_callable($validator_func)) {
-        // TODO: Add proper error handling if validator function is not defined.
-    }
-    */
+
     return [$validator_func, $params];
 }
 
 /**
- * @param string $params_string
+ * Parses validator parameters from a parameter string.
  *
- * @return array
+ * Example:
+ * `min=5&max=255`
+ *
+ * Result:
+ * [
+ *     'min' => '5',
+ *     'max' => '255',
+ * ]
+ *
+ * @param string $params_string Validator parameters string.
+ *
+ * @return array<string, string> Parsed parameters indexed by parameter name.
  */
 function parse_validator_params(string $params_string): array
 {
