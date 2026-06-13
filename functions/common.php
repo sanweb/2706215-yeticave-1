@@ -288,17 +288,6 @@ function redirect_to(string $url): never
 }
 
 /**
- * Data dump helper
- */
-function dd(mixed ...$args): void
-{
-    echo '<pre>';
-    print_r($args);
-    //var_dump($args);
-    echo '</pre>';
-}
-
-/**
  * Renders the 404 error page and sends the HTTP 404 status code.
  *
  * @param array $categories List of categories used in the layout and 404 page.
