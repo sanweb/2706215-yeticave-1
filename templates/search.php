@@ -69,7 +69,7 @@
     <?php if (!empty($pagination['pages'])): ?>
 
         <?= include_template('_partials/pagination.php', [
-            'pagination' => $pagination,
+            'pagination'   => $pagination,
             'current_page' => $current_page,
         ]) ?>
 

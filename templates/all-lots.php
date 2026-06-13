@@ -10,7 +10,7 @@
 <nav class="nav">
 
     <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
+        'categories'          => $categories,
         'current_category_id' => (int) ($category['id'] ?? 0),
     ]) ?>
 
@@ -67,7 +67,7 @@
     <?php if (!empty($pagination['pages'])): ?>
 
         <?= include_template('_partials/pagination.php', [
-            'pagination' => $pagination,
+            'pagination'   => $pagination,
             'current_page' => $current_page,
         ]) ?>
 
