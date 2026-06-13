@@ -5,12 +5,9 @@
 
 ?>
 <nav class="nav">
-
-    <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
-    ]) ?>
-
+    <?= include_template('_partials/nav-list.php', compact('categories')) ?>
 </nav>
+
 <section class="rates container">
     <h2>Мои ставки</h2>
 
@@ -51,7 +48,6 @@
                     </td>
 
                     <td class="rates__timer">
-
                         <?php if (!empty($bet['is_win'])): ?>
                             <div class="timer timer--win">Ставка выиграла</div>
                         <?php elseif (!empty($bet['is_expired'])): ?>
@@ -62,7 +58,6 @@
                                 <?= format_time_left($time_left) ?>
                             </div>
                         <?php endif; ?>
-
                     </td>
 
                     <td class="rates__price">
@@ -73,7 +68,6 @@
                         <?= format_time_since_bet($bet['bet_created_at']) ?>
                     </td>
                 </tr>
-
             <?php endforeach; ?>
 
         </table>

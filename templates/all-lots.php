@@ -8,13 +8,12 @@
 
 ?>
 <nav class="nav">
-
     <?= include_template('_partials/nav-list.php', [
         'categories'          => $categories,
         'current_category_id' => (int) ($category['id'] ?? 0),
     ]) ?>
-
 </nav>
+
 <div class="container">
     <section class="lots">
         <div class="lots__header">
@@ -32,16 +31,12 @@
         <?php else: ?>
             <p>Нет активных лотов в данной категории</p>
         <?php endif; ?>
-
     </section>
 
     <?php if (!empty($pagination['pages'])): ?>
-
         <?= include_template('_partials/pagination.php', [
             'pagination'   => $pagination,
             'current_page' => $current_page,
         ]) ?>
-
     <?php endif; ?>
-
 </div>

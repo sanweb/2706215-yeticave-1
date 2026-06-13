@@ -8,12 +8,9 @@
 
 ?>
 <nav class="nav">
-
-    <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
-    ]) ?>
-
+    <?= include_template('_partials/nav-list.php', compact('categories')) ?>
 </nav>
+
 <div class="container">
     <section class="lots">
         <div class="lots__header">
@@ -34,16 +31,13 @@
         <?php elseif ($search_phrase !== ''): ?>
             <p>Ничего не найдено по вашему запросу</p>
         <?php endif; ?>
-
     </section>
 
     <?php if (!empty($pagination['pages'])): ?>
-
-        <?= include_template('_partials/pagination.php', [
-            'pagination'   => $pagination,
-            'current_page' => $current_page,
-        ]) ?>
-
+        <?= include_template('_partials/pagination.php', compact(
+            'pagination',
+            'current_page'
+        )) ?>
     <?php endif; ?>
 
 </div>

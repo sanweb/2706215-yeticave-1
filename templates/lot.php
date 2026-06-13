@@ -13,12 +13,9 @@ $lot_item_class_modifier = !empty($lot['has_winner'])
 
 ?>
 <nav class="nav">
-
-    <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
-    ]) ?>
-
+    <?= include_template('_partials/nav-list.php', compact('categories')) ?>
 </nav>
+
 <section class="lot-item container">
     <h2><?= esc($lot['title'] ?? '') ?></h2>
     <div class="lot-item__content">
@@ -34,6 +31,7 @@ $lot_item_class_modifier = !empty($lot['has_winner'])
             <p class="lot-item__category">Категория: <span><?= esc($lot['category_name'] ?? '') ?></span></p>
             <p class="lot-item__description"><?= esc($lot['description'] ?? '') ?></p>
         </div>
+
         <div class="lot-item__right">
             <div class="lot-item__state<?= $lot_item_class_modifier ?>">
 
@@ -79,7 +77,6 @@ $lot_item_class_modifier = !empty($lot['has_winner'])
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
                 <?php endif; ?>
-
             </div>
 
             <?php if (!empty($bet_history)): ?>

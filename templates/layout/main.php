@@ -8,13 +8,9 @@
 /** @var array  $css_files */
 /** @var array  $js_files */
 
-$css_files = $css_files ?? [];
-$js_files = $js_files ?? [];
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <title><?= esc($page_title) ?></title>
@@ -22,12 +18,11 @@ $js_files = $js_files ?? [];
     <link href="/assets/css/normalize.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <!-- page styles -->
-    <?= include_asset_files(ASSET_TYPE_CSS, $css_files) ?>
+    <?= include_asset_files(ASSET_TYPE_CSS, $css_files ?? []) ?>
 </head>
-
 <body>
-    <div class="page-wrapper">
 
+    <div class="page-wrapper">
         <?= include_template('layout/_header.php', [
             'user'          => $user,
             'search_phrase' => $search_phrase ?? '',
@@ -44,7 +39,6 @@ $js_files = $js_files ?? [];
     ]) ?>
 
     <!-- page js -->
-    <?= include_asset_files(ASSET_TYPE_JS, $js_files) ?>
+    <?= include_asset_files(ASSET_TYPE_JS, $js_files ?? []) ?>
 </body>
-
 </html>

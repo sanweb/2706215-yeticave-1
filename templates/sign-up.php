@@ -8,12 +8,9 @@
 
 ?>
 <nav class="nav">
-
-    <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
-    ]) ?>
-
+    <?= include_template('_partials/nav-list.php', compact('categories')) ?>
 </nav>
+
 <form
     class="form container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
     action="sign-up.php"

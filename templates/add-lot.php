@@ -8,12 +8,9 @@
 
 ?>
 <nav class="nav">
-
-    <?= include_template('_partials/nav-list.php', [
-        'categories' => $categories,
-    ]) ?>
-
+    <?= include_template('_partials/nav-list.php', compact('categories')) ?>
 </nav>
+
 <!--suppress HtmlUnknownTarget -->
 <form
     class="form form--add-lot container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
@@ -52,7 +49,6 @@
                         <?= esc($category['name'] ?? '') ?>
                     </option>
                 <?php endforeach; ?>
-
             </select>
 
             <span class="form__error"><?= $form_errors[$field_name] ?? '' ?></span>
@@ -91,7 +87,6 @@
     </div>
 
     <div class="form__container-three">
-
         <?php $field_name = 'start_price'; ?>
         <?php $field_id = build_form_field_id($form_name, $field_name); ?>
         <div class="form__item form__item--small<?= !empty($form_errors[$field_name]) ? ' form__item--invalid' : '' ?>">

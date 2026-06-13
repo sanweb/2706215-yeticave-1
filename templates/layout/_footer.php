@@ -6,18 +6,18 @@
 ?>
 <footer class="main-footer">
     <nav class="nav">
-
-        <?= include_template('_partials/nav-list.php', [
-            'categories'          => $categories,
-            'current_category_id' => $current_category_id,
-        ]) ?>
-
+        <?= include_template('_partials/nav-list.php', compact(
+            'categories',
+            'current_category_id'
+        )) ?>
     </nav>
+
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">
             <p>&copy; <?= date('Y') ?>, YetiCave</p>
             <p>Интернет-аукцион сноубордического и горнолыжного снаряжения</p>
         </div>
+
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
             <a class="social__link social__link--facebook" href="#">
@@ -52,6 +52,7 @@
                 </svg>
             </a>
         </div>
+
         <a class="main-footer__add-lot button" href="/add.php">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
