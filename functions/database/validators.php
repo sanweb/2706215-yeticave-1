@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 const EXISTS_VALIDATOR_ALLOWED_TARGETS = [
     'categories.id' => ['categories', 'id', 'i'],
-    'users.email' => ['users', 'email', 's'],
+    'users.email'   => ['users', 'email', 's'],
 ];
 
 /**
@@ -86,9 +86,9 @@ function get_exists_validator_allowed_target(string $target_key): ?array
 function cast_value_to_mysqli_bind_type(string $value, string $mysqli_bind_type): int|float|string
 {
     return match ($mysqli_bind_type) {
-        'i' => (int) $value,
-        'd' => (float) $value,
-        's' => $value,
+        'i'     => (int) $value,
+        'd'     => (float) $value,
+        's'     => $value,
         default => $value, // fallback to string
     };
 }

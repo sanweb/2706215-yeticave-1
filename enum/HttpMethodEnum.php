@@ -7,6 +7,6 @@ declare(strict_types=1);
  */
 enum HttpMethodEnum: string
 {
-    case GET  = 'GET';
+    case GET = 'GET';
     case POST = 'POST';
 }

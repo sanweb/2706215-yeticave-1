@@ -29,7 +29,7 @@ $js_files = $js_files ?? [];
     <div class="page-wrapper">
 
         <?= include_template('layout/_header.php', [
-            'user' => $user,
+            'user'          => $user,
             'search_phrase' => $search_phrase ?? '',
         ]) ?>
 
@@ -39,7 +39,7 @@ $js_files = $js_files ?? [];
     </div>
 
     <?= include_template('layout/_footer.php', [
-        'categories' => $categories,
+        'categories'          => $categories,
         'current_category_id' => (int) ($current_category_id ?? 0),
     ]) ?>
 

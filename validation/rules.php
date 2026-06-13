@@ -33,8 +33,8 @@ const VALIDATION_RULES = [
         'contact_info' => ['required', 'string:min=30'],
     ],
     LOGIN_USER_FORM_KEY => [
-        'email'        => ['required', 'email'],
-        'password'     => ['required', 'string:max=128'],
+        'email'    => ['required', 'email'],
+        'password' => ['required', 'string:max=128'],
     ],
     CREATE_BET_FORM_KEY => [
         'amount' => ['required', 'int'],

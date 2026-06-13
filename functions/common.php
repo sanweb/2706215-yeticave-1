@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 // DateTime
 const SECONDS_PER_MINUTE = 60;
-const SECONDS_PER_HOUR   = SECONDS_PER_MINUTE * 60;
+const SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60;
 
 const DATE_FORMAT = 'Y-m-d';
 const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
 // Assets
 const ASSET_TYPE_CSS = 'css';
-const ASSET_TYPE_JS  = 'js';
+const ASSET_TYPE_JS = 'js';
 
 /**
  * Formats a price and optionally adds a currency sign suffix.
@@ -116,8 +116,8 @@ function get_elapsed_time(string $datetime): array
 
     return [
         'datetime' => $past_date,
-        'hours' => $hours,
-        'minutes' => $minutes,
+        'hours'    => $hours,
+        'minutes'  => $minutes,
     ];
 }
 
@@ -215,7 +215,7 @@ function is_datetime_valid(string $value, string $format = DATE_FORMAT): bool
     if ($errors === false) {
         $errors = [
             'warning_count' => 0,
-            'error_count' => 0,
+            'error_count'   => 0,
         ];
     }
 
