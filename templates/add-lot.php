@@ -14,6 +14,7 @@
     ]) ?>
 
 </nav>
+<!--suppress HtmlUnknownTarget -->
 <form
     class="form form--add-lot container<?= !empty($form_errors) ? ' form--invalid' : '' ?>"
     action="add.php"

@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpDefineCanBeReplacedWithConstInspection */
+
 declare(strict_types=1);
 
 date_default_timezone_set('Europe/Moscow');
@@ -21,11 +23,9 @@ require_once BASE_PATH . '/functions/auth.php';
 require_once BASE_PATH . '/functions/pagination.php';
 
 $db_config = require BASE_PATH . '/config/db.php';
-
 $db_connection = db_connect($db_config);
 
 session_start();
 
 $user = get_auth_user();
-
 $categories = get_all_categories($db_connection);

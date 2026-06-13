@@ -21,12 +21,10 @@ $is_bet_form_available = $lot && is_bet_form_available($lot, get_user_id());
 
 if ($is_bet_form_available && is_post_request()) {
     $form_data = $_POST;
-    $form_errors = [];
-
     $form_errors = validate_form_data(
         VALIDATION_RULES[CREATE_BET_FORM_KEY],
         $form_data,
-        $form_errors,
+        [],
         ['db' => $db_connection]
     );
 
@@ -46,7 +44,6 @@ if ($is_bet_form_available && is_post_request()) {
 }
 
 $bet_history = get_bet_history_by_lot_id($db_connection, $lot_id);
-
 $main_data = compact('lot', 'categories', 'is_bet_form_available', 'bet_history');
 
 if ($is_bet_form_available) {

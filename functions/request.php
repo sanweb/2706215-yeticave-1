@@ -28,16 +28,6 @@ function get_request_method(): string
 }
 
 /**
- * Checks whether the current request method is GET.
- *
- * @return bool True if the current request method is GET.
- */
-function is_get_request(): bool
-{
-    return get_request_method() === HttpMethodEnum::GET->value;
-}
-
-/**
  * Checks whether the current request method is POST.
  *
  * @return bool True if the current request method is POST.

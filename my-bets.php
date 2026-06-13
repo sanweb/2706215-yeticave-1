@@ -14,10 +14,10 @@ if (!is_auth()) {
 
 $user_bets = get_bets_by_user_id($db_connection, get_user_id());
 
-$main_content = include_template('my-bets.php', [
-    'categories' => $categories,
-    'user_bets'  => $user_bets,
-]);
+$main_content = include_template('my-bets.php', compact(
+    'categories',
+    'user_bets'
+));
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => 'Мои ставки',

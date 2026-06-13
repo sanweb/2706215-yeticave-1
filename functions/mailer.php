@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
@@ -17,6 +18,7 @@ require_once BASE_PATH . '/vendor/autoload.php';
  * @param string $subject Email subject.
  * @param string $body Email body.
  * @param string $content_type Email content type: text/plain or text/html.
+ * @throws TransportExceptionInterface
  */
 function send_mail(
     string $dsn,

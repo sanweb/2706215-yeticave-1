@@ -3,19 +3,18 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/init.php';
+require_once __DIR__ . '/getwinner.php';
 
 /** @var mysqli $db_connection */
 /** @var array  $user */
 /** @var array  $categories */
 
-require_once __DIR__ . '/getwinner.php';
-
 $lots = get_recent_lots($db_connection);
 
-$main_content = include_template('main.php', [
-    'categories' => $categories,
-    'lots'       => $lots,
-]);
+$main_content = include_template('main.php', compact(
+    'categories',
+    'lots'
+));
 
 $page_content = include_template('layout/main.php', [
     'page_title'     => 'Главная',

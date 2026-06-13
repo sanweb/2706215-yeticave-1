@@ -29,7 +29,6 @@ if (is_post_request()) {
         $user = get_user_by_email($db_connection, $form_data['email'] ?? '');
 
         if (!empty($user) && authenticate_user($user, $form_data['password'] ?? '')) {
-            // Redirect auth user
             redirect_to('/');
         } else {
             $login_error = 'Вы ввели неверный email/пароль';

@@ -35,16 +35,14 @@ $pagination = $total_lots > LOTS_PER_PAGE
         $current_page
     ) : [];
 
-$main_data = [
+$main_content = include_template('all-lots.php', [
     'categories'          => $categories,
     'category'            => $category,
     'current_category_id' => $category_id,
     'lots'                => $lots,
     'pagination'          => $pagination,
     'current_page'        => $current_page,
-];
-
-$main_content = include_template('all-lots.php', $main_data);
+]);
 
 $page_content = include_template('layout/main.php', [
     'page_title'          => 'Все лоты в категории ' . ($category['name'] ?? '') ,

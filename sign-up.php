@@ -17,7 +17,6 @@ $form_errors = [];
 
 if (is_post_request()) {
     $form_data = $_POST;
-
     $form_errors = validate_form_data(
         VALIDATION_RULES[CREATE_USER_FORM_KEY],
         $form_data,
@@ -28,10 +27,7 @@ if (is_post_request()) {
     if (empty($form_errors)) {
         $data = build_create_user_form_data($form_data);
 
-        $user_id = create_user($db_connection, $data);
-
-        if ($user_id) {
-            // Redirect registered user
+        if (create_user($db_connection, $data)) {
             redirect_to('/login.php');
         }
     }

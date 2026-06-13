@@ -17,7 +17,6 @@ $form_errors = [];
 
 if (is_post_request()) {
     $form_data = $_POST;
-
     $form_errors = validate_form_data(
         VALIDATION_RULES[CREATE_LOT_FORM_KEY],
         $form_data,
@@ -29,7 +28,6 @@ if (is_post_request()) {
 
     if (empty($form_errors)) {
         $data = build_create_lot_form_data($form_data, $user);
-
         $lot_id = create_lot($db_connection, $data);
 
         if ($lot_id) {

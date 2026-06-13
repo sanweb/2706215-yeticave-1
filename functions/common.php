@@ -55,8 +55,8 @@ function get_time_left(string $date): array
     $hours_left = 0;
     $minutes_left = 0;
 
-    if (is_datetime_valid($date, DATE_FORMAT)) {
-        $expiration_date = date_create_immutable_from_format('!Y-m-d H:i:s', "{$date} 23:59:59");
+    if (is_datetime_valid($date)) {
+        $expiration_date = date_create_immutable_from_format('!Y-m-d H:i:s', "$date 23:59:59");
         $now = date_create_immutable();
 
         if ($expiration_date !== false) {
