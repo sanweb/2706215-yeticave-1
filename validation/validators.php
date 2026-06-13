@@ -166,7 +166,7 @@ function validate_date(string $field, array $data, array $params = [], array $co
 {
     if (!isset($data[$field])) {
         $message = null;
-    } elseif (!is_date_valid($data[$field])) {
+    } elseif (!is_datetime_valid($data[$field], DATE_FORMAT)) {
         $message = 'Некорректная дата';
     } elseif (isset($params['gt'])) {
         $current_date = strtotime($data[$field]);
