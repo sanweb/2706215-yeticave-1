@@ -10,3 +10,4 @@ vendor
 uploads/*
 !uploads/.gitkeep
 .env
+.php-cs-fixer.cache
