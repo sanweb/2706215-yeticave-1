@@ -3,26 +3,29 @@
 declare(strict_types=1);
 
 /**
- * Возвращает корректную форму множественного числа
- * Ограничения: только для целых чисел
+ * Returns the correct Russian noun form for a given integer number.
  *
- * Пример использования:
+ * Works with integer values only.
+ *
+ * Example:
  * $remaining_minutes = 5;
- * echo "Я поставил таймер на {$remaining_minutes} " .
- *     get_noun_plural_form(
+ *
+ * echo "Я поставил таймер на {$remaining_minutes} "
+ *     . get_noun_plural_form(
  *         $remaining_minutes,
  *         'минута',
  *         'минуты',
  *         'минут'
  *     );
- * Результат: "Я поставил таймер на 5 минут"
  *
- * @param int $number Число, по которому вычисляем форму множественного числа
- * @param string $one Форма единственного числа: яблоко, час, минута
- * @param string $two Форма множественного числа для 2, 3, 4: яблока, часа, минуты
- * @param string $many Форма множественного числа для остальных чисел
+ * Result: "Я поставил таймер на 5 минут"
  *
- * @return string Рассчитанная форма множественнго числа
+ * @param int $number Number used to choose the correct noun form.
+ * @param string $one Singular form, for example: минута, час, яблоко.
+ * @param string $two Plural form used with 2, 3, 4, for example: минуты, часа, яблока.
+ * @param string $many Plural form used with 0, 5-20 and other values, for example: минут, часов, яблок.
+ *
+ * @return string Correct noun form for the given number.
  */
 function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
