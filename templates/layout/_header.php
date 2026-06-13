@@ -12,7 +12,7 @@
         </a>
         <form class="main-header__search" method="get" action="/search.php" autocomplete="off">
             <!--suppress HtmlFormInputWithoutLabel -->
-            <input type="search" name="search" value="<?= $search_phrase ?> "placeholder="Поиск лота">
+            <input type="search" name="search" value="<?= esc($search_phrase) ?>" placeholder="Поиск лота">
             <input class="main-header__search-btn" type="submit" value="Найти">
         </form>
         <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>

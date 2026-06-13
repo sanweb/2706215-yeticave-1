@@ -16,7 +16,7 @@ $total_lots = $search_phrase !== ''
     : 0;
 
 $search_results = $total_lots > 0
-    ? get_lots_by_phrase($db_connection, $search_phrase, LOTS_PER_PAGE, $current_page)
+    ? get_lots_by_phrase($db_connection, $search_phrase, $current_page)
     : [];
 
 $pagination = $total_lots > LOTS_PER_PAGE
