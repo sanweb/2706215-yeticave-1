@@ -1,6 +1,7 @@
 <?php
 
 /** @var array $categories */
+/** @var int   $current_category_id */
 
 ?>
 <ul class="nav__list container">

@@ -1,7 +1,6 @@
 <?php
 
 /** @var array  $categories */
-/** @var array  $lot */
 /** @var string $form_name */
 /** @var array  $form_data */
 /** @var array  $form_errors */

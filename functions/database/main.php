@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-// TODO: Replace exit() calls with exceptions and show errors on the error.php page.
-
 /**
  * Returns all lot categories.
  *

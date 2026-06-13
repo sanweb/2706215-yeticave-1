@@ -11,7 +11,6 @@ const UPLOADS_URL = '/uploads';
 const UPLOADS_DIR = BASE_PATH . UPLOADS_URL;
 
 // Forms
-// TODO: Create enum?
 const CREATE_LOT_FORM_KEY = 'create-lot-form';
 const CREATE_BET_FORM_KEY = 'create-bet-form';
 const CREATE_USER_FORM_KEY = 'create-user-form';

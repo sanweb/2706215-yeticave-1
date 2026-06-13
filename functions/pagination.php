@@ -27,8 +27,8 @@ function build_pagination(string $base_url, array $url_params, int $total_items,
     $pages_count = (int) ceil($total_items / $items_per_page);
 
     $pagination = [
-        'prev' => '',
-        'next' => '',
+        'prev'  => '',
+        'next'  => '',
         'pages' => [],
     ];
 
